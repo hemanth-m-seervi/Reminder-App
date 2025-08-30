@@ -9,6 +9,7 @@ import Reminders from './pages/Reminders';
 import Schedule from './pages/Schedule';
 import Auth from './pages/Auth';
 import ProtectedRoute from './components/ProtectedRoute';
+import MarksEntry from './pages/MarksEntry';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token'));
@@ -45,6 +46,11 @@ function App() {
             <Route path="/exams" element={
               <ProtectedRoute token={token}>
                 <Exams token={token} />
+              </ProtectedRoute>
+            } />
+            <Route path="/marks-entry" element={
+              <ProtectedRoute token={token}>
+                <MarksEntry token={token} />
               </ProtectedRoute>
             } />
             <Route path="/notes" element={

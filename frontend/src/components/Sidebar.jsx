@@ -5,6 +5,7 @@ const navItems = [
   { name: 'Home', path: '/', icon: <FaHome /> },
   { name: 'Timetable', path: '/timetable', icon: <FaTable /> },
   { name: 'Exams', path: '/exams', icon: <FaClipboardList /> },
+  { name: 'Marks Entry', path: '/marks-entry', icon: <FaClipboardList /> },
   { name: 'Notes', path: '/notes', icon: <FaBook /> },
   { name: 'Reminders', path: '/reminders', icon: <FaBell /> },
   { name: 'Schedule', path: '/schedule', icon: <FaCalendarAlt /> },

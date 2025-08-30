@@ -2,10 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 export default function Notes({ token }) {
-  const [notes, setNotes] = useState([]);
-  const [form, setForm] = useState({ subject: '', note: '' });
+  const [notes, setNotes] = useState([]); // Array of class/sem notes
+  const [classForm, setClassForm] = useState({ classOrSem: '' });
+  const [subjectForm, setSubjectForm] = useState({ subject: '' });
+  const [noteForm, setNoteForm] = useState({ note: '' });
   const [pdf, setPdf] = useState(null);
   const [error, setError] = useState('');
+  const [selectedClassId, setSelectedClassId] = useState(null);
+  const [selectedSubject, setSelectedSubject] = useState(null);
   const fileInputRef = useRef();
 
   useEffect(() => {
@@ -16,25 +20,23 @@ export default function Notes({ token }) {
       .then(data => setNotes(data));
   }, [token]);
 
-  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
-  const handleFileChange = e => setPdf(e.target.files[0]);
-
-  const handleAdd = async () => {
+  // Create class/sem
+  const handleAddClass = async () => {
     setError('');
-    if (form.subject && form.note) {
+    if (classForm.classOrSem) {
       try {
-        const res = await fetch('/api/notes', {
+        const res = await fetch('/api/notes/class', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'x-auth-token': token
           },
-          body: JSON.stringify(form)
+          body: JSON.stringify(classForm)
         });
         const data = await res.json();
         if (res.ok) {
           setNotes([...notes, data]);
-          setForm({ subject: '', note: '' });
+          setClassForm({ classOrSem: '' });
         } else {
           setError(data.msg || 'Error');
         }
@@ -44,12 +46,66 @@ export default function Notes({ token }) {
     }
   };
 
+  // Add subject session to selected class/sem
+  const handleAddSubject = async () => {
+    setError('');
+    if (selectedClassId && subjectForm.subject) {
+      try {
+        const res = await fetch('/api/notes/subject', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-auth-token': token
+          },
+          body: JSON.stringify({ noteId: selectedClassId, subject: subjectForm.subject })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          setNotes(notes.map(n => n._id === data._id ? data : n));
+          setSubjectForm({ subject: '' });
+        } else {
+          setError(data.msg || 'Error');
+        }
+      } catch {
+        setError('Server error');
+      }
+    }
+  };
+
+  // Add note to selected subject
+  const handleAddNote = async () => {
+    setError('');
+    if (selectedClassId && selectedSubject && noteForm.note) {
+      try {
+        const res = await fetch('/api/notes/note', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-auth-token': token
+          },
+          body: JSON.stringify({ noteId: selectedClassId, subject: selectedSubject, note: noteForm.note })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          setNotes(notes.map(n => n._id === data._id ? data : n));
+          setNoteForm({ note: '' });
+        } else {
+          setError(data.msg || 'Error');
+        }
+      } catch {
+        setError('Server error');
+      }
+    }
+  };
+
+  // Add PDF to selected subject
   const handleAddPdf = async () => {
     setError('');
-    if (form.subject && form.note && pdf) {
+    if (selectedClassId && selectedSubject && pdf) {
       const formData = new FormData();
-      formData.append('subject', form.subject);
-      formData.append('note', form.note);
+      formData.append('noteId', selectedClassId);
+      formData.append('subject', selectedSubject);
+      formData.append('note', noteForm.note);
       formData.append('pdf', pdf);
       try {
         const res = await fetch('/api/notes/pdf', {
@@ -61,8 +117,8 @@ export default function Notes({ token }) {
         });
         const data = await res.json();
         if (res.ok) {
-          setNotes([...notes, data]);
-          setForm({ subject: '', note: '' });
+          setNotes(notes.map(n => n._id === data._id ? data : n));
+          setNoteForm({ note: '' });
           setPdf(null);
           fileInputRef.current.value = '';
         } else {
@@ -75,30 +131,159 @@ export default function Notes({ token }) {
   };
 
   return (
-    <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="max-w-2xl mx-auto">
-      <h2 className="text-3xl font-bold text-purple-700 mb-6">Subject-wise Notes</h2>
-      <div className="bg-white rounded-xl shadow p-6 mb-6">
-        <div className="flex gap-4 mb-4 flex-wrap">
-          <input name="subject" value={form.subject} onChange={handleChange} placeholder="Subject" className="input" />
-          <input name="note" value={form.note} onChange={handleChange} placeholder="Note" className="input" />
-          <button onClick={handleAdd} className="btn-primary">Add Text Note</button>
+    <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="max-w-5xl mx-auto">
+      <h2 className="text-4xl font-extrabold text-purple-800 mb-8 text-center tracking-tight">Notes Organizer</h2>
+      <div className="flex gap-8">
+        {/* Sidebar: Classes/Sems */}
+        <div className="w-64 bg-white rounded-2xl shadow-lg p-4 flex flex-col">
+          <h3 className="text-xl font-bold text-purple-700 mb-4">Classes/Sems</h3>
+          <div className="mb-4">
+            <input name="classOrSem" value={classForm.classOrSem} onChange={e => setClassForm({ classOrSem: e.target.value })} placeholder="Add new class/sem" className="border-2 border-purple-300 rounded-lg px-3 py-2 w-full mb-2" />
+            <button onClick={async () => {
+              setError('');
+              if (classForm.classOrSem) {
+                try {
+                  const res = await fetch('/api/notes/class', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'x-auth-token': token
+                    },
+                    body: JSON.stringify(classForm)
+                  });
+                  const data = await res.json();
+                  if (res.ok) {
+                    setNotes([...notes, data]);
+                    setClassForm({ classOrSem: '' });
+                  } else {
+                    setError(data.msg || 'Error');
+                  }
+                } catch {
+                  setError('Server error');
+                }
+              }
+            }} className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2 rounded-lg font-semibold shadow hover:from-purple-600 hover:to-blue-600 transition w-full">Add</button>
+          </div>
+          <div className="flex-1 overflow-y-auto">
+            {notes.length === 0 ? (
+              <p className="text-gray-400">No classes/sems yet.</p>
+            ) : (
+              <ul>
+                {notes.map(n => (
+                  <li key={n._id} className={`mb-2 p-2 rounded-lg cursor-pointer transition ${selectedClassId === n._id ? 'bg-purple-100 font-bold' : 'hover:bg-purple-50'}`} onClick={() => { setSelectedClassId(n._id); setSelectedSubject(null); }}>
+                    {n.classOrSem}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
-        <div className="flex gap-4 mb-4 flex-wrap">
-          <input type="file" accept="application/pdf" ref={fileInputRef} onChange={handleFileChange} className="input" />
-          <button onClick={handleAddPdf} className="btn-primary">Add PDF Note</button>
+        {/* Main Content: Subjects and Notes */}
+        <div className="flex-1 bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl shadow-lg p-8">
+          {selectedClassId ? (
+            notes.filter(n => n._id === selectedClassId).map(n => (
+              <div key={n._id}>
+                <h3 className="text-2xl font-bold text-purple-700 mb-4">{n.classOrSem}</h3>
+                {/* Subjects Dropdown and Add Button */}
+                <div className="mb-6 flex gap-4 items-center">
+                  <select
+                    value={selectedSubject || ''}
+                    onChange={e => setSelectedSubject(e.target.value)}
+                    className="border-2 border-blue-300 rounded-lg px-3 py-2 w-56"
+                  >
+                    <option value="">--Select Subject--</option>
+                    {n.subjects.map((s, idx) => (
+                      <option key={idx} value={s.subject}>{s.subject}</option>
+                    ))}
+                  </select>
+                  <input
+                    name="subject"
+                    value={subjectForm.subject}
+                    onChange={e => setSubjectForm({ subject: e.target.value })}
+                    placeholder="Add new subject"
+                    className="border-2 border-blue-300 rounded-lg px-3 py-2 w-48"
+                  />
+                  <button
+                    onClick={async () => {
+                      setError("");
+                      if (selectedClassId && subjectForm.subject) {
+                        try {
+                          const res = await fetch('/api/notes/subject', {
+                            method: 'POST',
+                            headers: {
+                              'Content-Type': 'application/json',
+                              'x-auth-token': token
+                            },
+                            body: JSON.stringify({ noteId: selectedClassId, subject: subjectForm.subject })
+                          });
+                          const data = await res.json();
+                          if (res.ok) {
+                            setNotes(notes.map(n => n._id === data._id ? data : n));
+                            setSubjectForm({ subject: '' });
+                            // Only set selectedSubject if it exists in the updated subjects array
+                            const updatedClass = data;
+                            if (updatedClass.subjects.some(s => s.subject === subjectForm.subject)) {
+                              setSelectedSubject(subjectForm.subject);
+                            } else {
+                              setSelectedSubject(null);
+                            }
+                          } else {
+                            setError(data.msg || 'Error');
+                          }
+                        } catch {
+                          setError('Server error');
+                        }
+                      }
+                    }}
+                    className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-lg font-semibold shadow hover:from-blue-600 hover:to-purple-600 transition"
+                  >
+                    Add Subject
+                  </button>
+                </div>
+                {/* Notes/PDFs for selected subject */}
+                {selectedSubject ? (
+                  n.subjects.filter(s => s.subject === selectedSubject).map((s, j) => (
+                    <div key={j} className="mb-4">
+                      <h4 className="text-lg font-semibold text-blue-700 mb-2">{s.subject}</h4>
+                      {/* Add note/pdf */}
+                      <div className="flex gap-3 mb-4 flex-wrap items-center">
+                        <input name="note" value={noteForm.note} onChange={e => setNoteForm({ note: e.target.value })} placeholder="Note" className="border-2 border-blue-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition w-56" />
+                        <button onClick={handleAddNote} className="bg-blue-500 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-blue-600 transition">Add Text Note</button>
+                      </div>
+                      <div className="flex gap-3 mb-6 flex-wrap items-center">
+                        <input type="file" accept="application/pdf" ref={fileInputRef} onChange={e => setPdf(e.target.files[0])} className="border-2 border-blue-300 rounded-lg px-4 py-2 w-56" />
+                        <button onClick={handleAddPdf} className="bg-purple-500 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-purple-600 transition">Add PDF Note</button>
+                      </div>
+                      {/* List notes/pdfs */}
+                      {s.notes.length === 0 ? (
+                        <p className="text-gray-400 ml-2">No notes yet.</p>
+                      ) : (
+                        <ul className="ml-2 space-y-2">
+                          {s.notes.map((noteObj, k) => (
+                            <li key={k} className="bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg p-3 shadow flex items-center justify-between">
+                              <span className="text-gray-800 font-medium">{noteObj.note || (noteObj.pdfUrl ? noteObj.pdfUrl.split('/').pop() : '')}</span>
+                              {noteObj.pdfUrl && (
+                                <a href={noteObj.pdfUrl} target="_blank" rel="noopener noreferrer" className="ml-4 text-blue-600 underline font-semibold">
+                                  {noteObj.note ? 'View PDF' : noteObj.pdfUrl.split('/').pop()}
+                                </a>
+                              )}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-400 ml-2">Select a subject to view/add notes.</p>
+                )}
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500 text-center">Select a class/sem to view subjects and notes.</p>
+          )}
+          {error && <div className="text-red-500 text-sm mt-4">{error}</div>}
         </div>
-        {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
-        <ul className="space-y-2">
-          {notes.map((note, idx) => (
-            <li key={idx} className="bg-purple-50 rounded p-3">
-              <strong className="text-purple-700">{note.subject}:</strong> {note.note}
-              {note.pdfUrl && (
-                <a href={note.pdfUrl} target="_blank" rel="noopener noreferrer" className="ml-2 text-blue-600 underline">View PDF</a>
-              )}
-            </li>
-          ))}
-        </ul>
       </div>
-    </motion.div>
+  </motion.div>
   );
 }

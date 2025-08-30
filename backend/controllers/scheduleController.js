@@ -6,8 +6,8 @@ exports.getSchedule = async (req, res) => {
 };
 
 exports.addSchedule = async (req, res) => {
-  const { time, task } = req.body;
-  const entry = new Schedule({ user: req.user.id, time, task });
+  const { time, task, date } = req.body;
+  const entry = new Schedule({ user: req.user.id, time, task, date });
   await entry.save();
   res.json(entry);
 };

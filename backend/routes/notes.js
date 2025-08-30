@@ -1,11 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
-const { getNotes, addNote, addNotePdf } = require('../controllers/notesController');
+const { getNotes, addNote, addNotePdf, createClassOrSem, addSubjectSession, addNoteToSubject, addPdfToSubject } = require('../controllers/notesController');
 const upload = require('../utils/multer');
 
+
+// Get all notes
 router.get('/', auth, getNotes);
-router.post('/', auth, addNote);
-router.post('/pdf', auth, upload.single('pdf'), addNotePdf);
+
+// Create class/sem
+router.post('/class', auth, createClassOrSem);
+
+// Add subject session to class/sem
+router.post('/subject', auth, addSubjectSession);
+
+// Add note to subject session
+router.post('/note', auth, addNoteToSubject);
+
+// Add PDF to subject session
+router.post('/pdf', auth, upload.single('pdf'), addPdfToSubject);
 
 module.exports = router;

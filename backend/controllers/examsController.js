@@ -6,8 +6,18 @@ exports.getExams = async (req, res) => {
 };
 
 exports.addExam = async (req, res) => {
-  const { subject, date, marks } = req.body;
-  const exam = new Exam({ user: req.user.id, subject, date, marks });
+  const { name } = req.body;
+  const exam = new Exam({ user: req.user.id, name, details: [] });
   await exam.save();
   res.json(exam);
+};
+
+exports.addExamDetail = async (req, res) => {
+  const { examId } = req.params;
+  const { subject, date, day, time } = req.body;
+  const exam = await Exam.findOne({ _id: examId, user: req.user.id });
+  if (!exam) return res.status(404).json({ msg: 'Exam not found' });
+  exam.details.push({ subject, date, day, time });
+  await exam.save();
+  res.json({ details: exam.details });
 };

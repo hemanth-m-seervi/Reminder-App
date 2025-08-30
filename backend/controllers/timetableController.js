@@ -6,8 +6,8 @@ exports.getTimetable = async (req, res) => {
 };
 
 exports.addTimetable = async (req, res) => {
-  const { day, subject, time } = req.body;
-  const entry = new Timetable({ user: req.user.id, day, subject, time });
+  const { day, subject, startTime, endTime } = req.body;
+  const entry = new Timetable({ user: req.user.id, day, subject, startTime, endTime });
   await entry.save();
   res.json(entry);
 };
