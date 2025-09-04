@@ -1,65 +1,169 @@
 import React, { useState } from 'react';
+import TypingTest from '../components/TypingTest';
 import { motion } from 'framer-motion';
+import ImageSearch from '../components/ImageSearch';
 import { FaUserCircle, FaRegCalendarAlt, FaCalculator, FaVolumeUp, FaMicrophone, FaGlobe, FaMoneyBillWave } from 'react-icons/fa';
 import TextToSpeech from '../components/TextToSpeech';
 import SpeechToText from '../components/SpeechToText';
 import LanguageTranslator from '../components/LanguageTranslator';
 import CurrencyConverter from '../components/CurrencyConverter';
+import Dictionary from '../components/Dictionary';
 
 export default function Home() {
+  const [showTypingTest, setShowTypingTest] = useState(false);
   const [showCalculator, setShowCalculator] = useState(false);
   const [showTTS, setShowTTS] = useState(false);
   const [showSTT, setShowSTT] = useState(false);
   const [showTranslator, setShowTranslator] = useState(false);
   const [showCurrency, setShowCurrency] = useState(false);
+  const [showImageSearch, setShowImageSearch] = useState(false);
+  const [showDictionary, setShowDictionary] = useState(false);
+  const [calendarMonth, setCalendarMonth] = useState(8); // 0-indexed: 8 = September
+  const [calendarYear, setCalendarYear] = useState(2025);
   return (
     <>
   <motion.div initial={{ opacity: 0, y: 0 }} animate={{ opacity: 1, y: -30 }} transition={{ duration: 0.6 }} className="flex flex-col items-center h-full pt-12 ml-64">
         <div className="flex flex-row items-start justify-center w-full">
           {/* Welcome message and logo on the left */}
           <div className="flex flex-col items-start justify-center mr-32">
-            <FaUserCircle className="text-7xl text-purple-400 mb-4 ml-15 mt-25" />
+            {/* Animated Human Icon - Remove bouncing, use subtle rotate */}
+            <motion.div
+              initial={{ rotate: 0 }}
+              animate={{ rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, repeatType: 'loop', ease: 'easeInOut' }}
+              className="inline-block"
+            >
+              <FaUserCircle className="text-7xl text-purple-400 mb-4 ml-15 mt-10" />
+            </motion.div>
             <h2 className="text-4xl font-bold text-purple-700 mb-4 text-left ml-15 mt-3">Welcome to Remin!</h2>
             <p className="text-lg text-gray-600 mb-8 pl-15 text-left max-w-xl">
               Manage your college life with ease! Add your timetable, exams, notes, reminders, and daily schedule. Stay organized, track your progress, and never miss a deadline.
             </p>
           </div>
           {/* Calendar on the right */}
-          <div className="flex flex-col items-center p-6 rounded-xl shadow-lg bg-gradient-to-br from-purple-50 to-blue-50 border border-purple-200 w-fit ml-32">
+          <div className="flex flex-col items-center p-4 rounded-xl shadow-lg bg-gradient-to-br from-purple-50 to-blue-50 border border-purple-200 w-fit ml-16 max-w-xs" style={{ minWidth: '260px' }}>
             <div className="flex justify-between items-center w-full mb-4">
-              <button className="px-3 py-1 rounded bg-purple-200 text-purple-700 font-bold hover:bg-purple-300 transition">&#8592;</button>
-              <span className="text-xl font-bold text-purple-700">September 2025</span>
-              <button className="px-3 py-1 rounded bg-purple-200 text-purple-700 font-bold hover:bg-purple-300 transition">&#8594;</button>
+              <button className="px-2 py-1 rounded bg-purple-200 text-purple-700 font-bold hover:bg-purple-300 transition text-sm" onClick={() => {
+                if (calendarMonth === 0) {
+                  setCalendarMonth(11);
+                  setCalendarYear(calendarYear - 1);
+                } else {
+                  setCalendarMonth(calendarMonth - 1);
+                }
+              }}>&#8592;</button>
+              <span className="text-lg font-bold text-purple-700">{new Date(calendarYear, calendarMonth).toLocaleString('default', { month: 'long', year: 'numeric' })}</span>
+              <button className="px-2 py-1 rounded bg-purple-200 text-purple-700 font-bold hover:bg-purple-300 transition text-sm" onClick={() => {
+                if (calendarMonth === 11) {
+                  setCalendarMonth(0);
+                  setCalendarYear(calendarYear + 1);
+                } else {
+                  setCalendarMonth(calendarMonth + 1);
+                }
+              }}>&#8594;</button>
             </div>
-            <div className="grid grid-cols-7 gap-2 w-full">
+            <div className="grid grid-cols-7 gap-1 w-full">
               {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(day => (
                 <span key={day} className="text-xs font-semibold text-purple-600 text-center">{day}</span>
               ))}
-              {/* Example days for September 2025 (1st is Monday) */}
-              {Array.from({ length: 6 }, (_, i) => <span key={'empty'+i}></span>)}
-              {Array.from({ length: 30 }, (_, i) => {
+              {/* Calculate first day of month */}
+              {Array.from({ length: new Date(calendarYear, calendarMonth, 1).getDay() }, (_, i) => <span key={'empty'+i}></span>)}
+              {/* Days in month */}
+              {Array.from({ length: new Date(calendarYear, calendarMonth + 1, 0).getDate() }, (_, i) => {
                 const today = new Date();
-                const isToday = today.getFullYear() === 2025 && today.getMonth() === 8 && today.getDate() === i+1;
+                const isToday = today.getFullYear() === calendarYear && today.getMonth() === calendarMonth && today.getDate() === i+1;
                 return (
                   <button
                     key={i+1}
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium text-gray-700 hover:bg-purple-200 focus:bg-purple-400 focus:text-white transition ${isToday ? 'bg-purple-500 text-white font-bold border-2 border-purple-700' : ''}`}
+                    className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium text-gray-700 hover:bg-purple-200 focus:bg-purple-400 focus:text-white transition ${isToday ? 'bg-purple-500 text-white font-bold border-2 border-purple-700' : ''}`}
                   >
                     {i+1}
                   </button>
                 );
               })}
             </div>
-            <span className="mt-4 text-base text-purple-700 font-semibold">Today: {new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })}</span>
+            <span className="mt-2 text-sm text-purple-700 font-semibold">Today: {new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })}</span>
           </div>
         </div>
 
         {/* Tools for Students Section with improved UI */}
-        <div className="w-full flex flex-col items-center mt-12">
-          <h3 className="text-3xl font-extrabold mb-6 mt-5 bg-gradient-to-r from-purple-500 via-blue-500 to-purple-400 bg-clip-text text-transparent drop-shadow-lg tracking-wide">Tools for Students</h3>
-          <div className="flex flex-wrap gap-8 justify-center">
+        <div className="w-full flex flex-col items-center mt-15">
+          <h3 className="text-3xl font-extrabold mb-2 mt-8 text-purple-700 bg-clip-text  drop-shadow-lg tracking-wide text-center">Tools for Students</h3>
+          <div className="w-40 h-1 bg-gradient-to-r from-purple-500 via-blue-500 to-purple-400 rounded-full mx-auto mb-6"></div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 justify-center w-full max-w-5xl mx-auto">
+            {/* Typing Test Card */}
+            <div className="bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl shadow-lg p-4 flex flex-col items-center w-48 hover:scale-105 transition-transform cursor-pointer border border-blue-200">
+              <button
+                className="flex flex-col items-center justify-center"
+                onClick={() => setShowTypingTest(true)}
+                title="Typing Test"
+              >
+                <div className="bg-cyan-200 rounded-full p-4 mb-3 flex items-center justify-center shadow">
+                  <span className="text-4xl text-cyan-700">⌨️</span>
+                </div>
+                <span className="text-lg font-bold text-cyan-700">Typing Test</span>
+                <span className="text-xs text-gray-500 mt-1">Test your typing speed</span>
+              </button>
+            </div>
+      {/* Typing Test Modal */}
+      {showTypingTest && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{backdropFilter: 'blur(8px)', background: 'rgba(0,0,0,0.15)'}}>
+          <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-2xl fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center" style={{maxHeight: '80vh', overflowY: 'auto'}}>
+            <button className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-xl" onClick={() => setShowTypingTest(false)}>&#10005;</button>
+            <h4 className="text-lg font-bold text-cyan-700 mb-4 text-center">Typing Test</h4>
+            <TypingTest />
+          </div>
+        </div>
+      )}
+            {/* Image Generator Card */}
+            <div className="bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl shadow-lg p-4 flex flex-col items-center w-48 hover:scale-105 transition-transform cursor-pointer border border-blue-200">
+              <button
+                className="flex flex-col items-center justify-center"
+                onClick={() => setShowImageSearch(true)}
+                title="Image Generator"
+              >
+                <div className="bg-purple-200 rounded-full p-4 mb-3 flex items-center justify-center shadow">
+                  <span className="text-4xl text-blue-700">🖼️</span>
+                </div>
+                <span className="text-lg font-bold text-blue-700">Image Generator</span>
+                <span className="text-xs text-gray-500 mt-1">Search Unsplash images</span>
+              </button>
+            </div>
+            {/* Dictionary Card */}
+            <div className="bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl shadow-lg p-4 flex flex-col items-center w-48 hover:scale-105 transition-transform cursor-pointer border border-blue-200">
+              <button
+                className="flex flex-col items-center justify-center"
+                onClick={() => setShowDictionary(true)}
+                title="Dictionary"
+              >
+                <div className="bg-blue-200 rounded-full p-4 mb-3 flex items-center justify-center shadow">
+                  <span className="text-4xl text-purple-700">📖</span>
+                </div>
+                <span className="text-lg font-bold text-purple-700">Dictionary</span>
+                <span className="text-xs text-gray-500 mt-1">Find word meanings</span>
+              </button>
+            </div>
+      {/* Image Generator Modal */}
+      {showImageSearch && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-transparent" style={{backdropFilter: 'blur(8px)', background: 'rgba(0,0,0,0.15)'}}>
+          <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-4xl relative overflow-y-auto max-h-[80vh]">
+            <button className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-xl" onClick={() => setShowImageSearch(false)}>&#10005;</button>
+            <h4 className="text-lg font-bold text-yellow-700 mb-4 text-center">Image Generator</h4>
+            <ImageSearch />
+          </div>
+        </div>
+      )}
+        {/* Dictionary Modal */}
+        {showDictionary && (
+          <div className="fixed inset-0 flex items-center justify-center z-50 bg-transparent" style={{backdropFilter: 'blur(8px)', background: 'rgba(0,0,0,0.15)'}}>
+            <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-md relative overflow-y-auto max-h-[80vh]">
+              <button className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-xl" onClick={() => setShowDictionary(false)}>&#10005;</button>
+              <h4 className="text-lg font-bold text-purple-700 mb-4 text-center">Dictionary</h4>
+              <Dictionary />
+            </div>
+          </div>
+        )}
             {/* Currency Converter Card */}
-            <div className="bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl shadow-lg p-6 flex flex-col items-center w-48 hover:scale-105 transition-transform cursor-pointer border border-blue-200">
+            <div className="bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl shadow-lg p-4 flex flex-col items-center w-48 hover:scale-105 transition-transform cursor-pointer border border-blue-200">
               <button
                 className="flex flex-col items-center justify-center"
                 onClick={() => setShowCurrency(true)}
@@ -83,7 +187,7 @@ export default function Home() {
         </div>
       )}
             {/* Calculator Card */}
-            <div className="bg-gradient-to-br from-purple-100 to-blue-100 rounded-2xl shadow-lg p-6 flex flex-col items-center w-48 hover:scale-105 transition-transform cursor-pointer border border-purple-200">
+            <div className="bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl shadow-lg p-4 flex flex-col items-center w-48 hover:scale-105 transition-transform cursor-pointer border border-blue-200">
               <button
                 className="flex flex-col items-center justify-center"
                 onClick={() => setShowCalculator(true)}
@@ -97,21 +201,21 @@ export default function Home() {
               </button>
             </div>
             {/* Text-to-Speech Card */}
-            <div className="bg-gradient-to-br from-pink-100 to-purple-100 rounded-2xl shadow-lg p-6 flex flex-col items-center w-48 hover:scale-105 transition-transform cursor-pointer border border-pink-200">
+            <div className="bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl shadow-lg p-4 flex flex-col items-center w-48 hover:scale-105 transition-transform cursor-pointer border border-blue-200">
               <button
                 className="flex flex-col items-center justify-center"
                 onClick={() => setShowTTS(true)}
                 title="Text to Speech"
               >
                 <div className="bg-purple-200 rounded-full p-4 mb-3 flex items-center justify-center shadow">
-                  <FaVolumeUp className="text-4xl text-purple-700" />
+                  <FaVolumeUp className="text-4xl text-blue-700" />
                 </div>
-                <span className="text-lg font-bold text-pink-700">Text to Speech</span>
+                <span className="text-lg font-bold text-blue-700">Text to Speech</span>
                 <span className="text-xs text-gray-500 mt-1">Convert text to audio</span>
               </button>
             </div>
             {/* Speech-to-Text Card */}
-            <div className="bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl shadow-lg p-6 flex flex-col items-center w-48 hover:scale-105 transition-transform cursor-pointer border border-blue-200">
+            <div className="bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl shadow-lg p-4 flex flex-col items-center w-48 hover:scale-105 transition-transform cursor-pointer border border-blue-200">
               <button
                 className="flex flex-col items-center justify-center"
                 onClick={() => setShowSTT(true)}
@@ -125,7 +229,7 @@ export default function Home() {
               </button>
             </div>
             {/* Language Translator Card */}
-            <div className="bg-gradient-to-br from-purple-100 to-blue-100 rounded-2xl shadow-lg p-6 flex flex-col items-center w-48 hover:scale-105 transition-transform cursor-pointer border border-purple-200">
+            <div className="bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl shadow-lg p-4 flex flex-col items-center w-48 hover:scale-105 transition-transform cursor-pointer border border-blue-200">
               <button
                 className="flex flex-col items-center justify-center"
                 onClick={() => setShowTranslator(true)}
