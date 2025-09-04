@@ -185,13 +185,13 @@ export default function Notes({ token }) {
               <div key={n._id}>
                 <h3 className="text-2xl font-bold text-purple-700 mb-4">{n.classOrSem}</h3>
                 {/* Subjects Dropdown and Add Button */}
-                <div className="mb-6 flex gap-4 items-center">
+                <div className="mb-6 flex gap-2 items-center">
                   <select
                     value={selectedSubject || ''}
                     onChange={e => setSelectedSubject(e.target.value)}
-                    className="border-2 border-blue-300 rounded-lg px-3 py-2 w-56"
+                    className="border-2 border-blue-300 rounded px-2 py-1 w-32 text-sm"
                   >
-                    <option value="">--Select Subject--</option>
+                    <option value="">Select Subject</option>
                     {n.subjects.map((s, idx) => (
                       <option key={idx} value={s.subject}>{s.subject}</option>
                     ))}
@@ -201,7 +201,7 @@ export default function Notes({ token }) {
                     value={subjectForm.subject}
                     onChange={e => setSubjectForm({ subject: e.target.value })}
                     placeholder="Add new subject"
-                    className="border-2 border-blue-300 rounded-lg px-3 py-2 w-48"
+                    className="border-2 border-blue-300 rounded px-2 py-1 w-28 text-sm"
                   />
                   <button
                     onClick={async () => {
@@ -235,7 +235,7 @@ export default function Notes({ token }) {
                         }
                       }
                     }}
-                    className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-lg font-semibold shadow hover:from-blue-600 hover:to-purple-600 transition"
+                    className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-2 py-1 rounded font-semibold shadow hover:from-blue-600 hover:to-purple-600 transition text-xs"
                   >
                     Add Subject
                   </button>
@@ -247,12 +247,10 @@ export default function Notes({ token }) {
                       <h4 className="text-lg font-semibold text-blue-700 mb-2">{s.subject}</h4>
                       {/* Add note/pdf */}
                       <div className="flex gap-3 mb-4 flex-wrap items-center">
-                        <input name="note" value={noteForm.note} onChange={e => setNoteForm({ note: e.target.value })} placeholder="Note" className="border-2 border-blue-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition w-56" />
-                        <button onClick={handleAddNote} className="bg-blue-500 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-blue-600 transition">Add Text Note</button>
-                      </div>
-                      <div className="flex gap-3 mb-6 flex-wrap items-center">
-                        <input type="file" accept="application/pdf" ref={fileInputRef} onChange={e => setPdf(e.target.files[0])} className="border-2 border-blue-300 rounded-lg px-4 py-2 w-56" />
-                        <button onClick={handleAddPdf} className="bg-purple-500 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-purple-600 transition">Add PDF Note</button>
+                        <input name="note" value={noteForm.note} onChange={e => setNoteForm({ note: e.target.value })} placeholder="Note" className="border-2 border-blue-300 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 transition w-40 text-sm" />
+                        <button onClick={handleAddNote} className="bg-blue-500 text-white px-3 py-1 rounded font-semibold shadow hover:bg-blue-600 transition text-xs">Add Text Note</button>
+                        <input type="file" accept="application/pdf" ref={fileInputRef} onChange={e => setPdf(e.target.files[0])} className="border-2 border-blue-300 rounded-lg px-2 py-1 w-40 text-sm" />
+                        <button onClick={handleAddPdf} className="bg-purple-500 text-white px-3 py-1 rounded font-semibold shadow hover:bg-purple-600 transition text-xs">Add PDF Note</button>
                       </div>
                       {/* List notes/pdfs */}
                       {s.notes.length === 0 ? (
@@ -263,9 +261,24 @@ export default function Notes({ token }) {
                             <li key={k} className="bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg p-3 shadow flex items-center justify-between">
                               <span className="text-gray-800 font-medium">{noteObj.note || (noteObj.pdfUrl ? noteObj.pdfUrl.split('/').pop() : '')}</span>
                               {noteObj.pdfUrl && (
-                                <a href={noteObj.pdfUrl} target="_blank" rel="noopener noreferrer" className="ml-4 text-blue-600 underline font-semibold">
-                                  {noteObj.note ? 'View PDF' : noteObj.pdfUrl.split('/').pop()}
-                                </a>
+                                (() => {
+                                  const url = noteObj.pdfUrl;
+                                  const isPdf = url.endsWith('.pdf');
+                                  const isDoc = url.endsWith('.doc') || url.endsWith('.docx') || url.endsWith('.ppt') || url.endsWith('.pptx');
+                                  const viewerUrl = isDoc
+                                    ? `https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(url)}`
+                                    : url;
+                                  return (
+                                    <a
+                                      href={viewerUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="ml-4 text-blue-600 underline font-semibold"
+                                    >
+                                      {noteObj.note ? (isPdf ? 'View PDF' : isDoc ? 'View File' : 'View') : url.split('/').pop()}
+                                    </a>
+                                  );
+                                })()
                               )}
                             </li>
                           ))}

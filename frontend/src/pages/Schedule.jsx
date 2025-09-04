@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
@@ -7,6 +6,17 @@ export default function Schedule({ token }) {
   const [tasks, setTasks] = useState([]);
   const [form, setForm] = useState({ time: '', task: '', date: '' });
   const [error, setError] = useState('');
+
+  // Real-time tracking: Remove tasks whose time has passed every minute
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTasks(tasks => tasks.filter(task => {
+        const taskDate = new Date(`${task.date}T${task.time}`);
+        return taskDate >= new Date();
+      }));
+    }, 60000); // check every minute
+    return () => clearInterval(interval);
+  }, []);
 
   // Sort schedule by date and time (nearest first)
   const sortedSchedule = [...tasks].sort((a, b) => {
@@ -113,12 +123,30 @@ export default function Schedule({ token }) {
                }
                return (
                  <li key={idx} className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl p-4 shadow flex flex-col md:flex-row md:items-center md:justify-between mb-2">
-                   <div className="flex items-center gap-4">
-                     <span className="text-lg font-bold text-purple-700">{dateStr}</span>
-                     <span className="text-md text-blue-700 font-semibold">{timeStr}</span>
-                   </div>
-                   <span className="text-gray-700 mt-2 md:mt-0">{task.task}</span>
-                 </li>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={async () => {
+                        try {
+                          const res = await fetch(`/api/schedule/${task._id}`, {
+                            method: 'DELETE',
+                            headers: { 'x-auth-token': token }
+                          });
+                          if (res.ok) {
+                            setTasks(tasks => tasks.filter((t) => t._id !== task._id));
+                          }
+                        } catch {}
+                      }}
+                      className="mr-2 p-0 rounded-full text-gray-400 text-xs font-bold hover:text-red-500 transition flex items-center justify-center"
+                      title="Delete schedule item"
+                      style={{ width: '18px', height: '18px', background: 'transparent', border: 'none', lineHeight: '0' }}
+                    >
+                      &#10005;
+                    </button>
+                    <span className="text-lg font-bold text-purple-700">{dateStr}</span>
+                    <span className="text-md text-blue-700 font-semibold">{timeStr}</span>
+                  </div>
+                  <span className="text-gray-700 mt-2 md:mt-0">{task.task}</span>
+                </li>
                );
             })}
                   {/* Nearest deadline banner */}

@@ -45,27 +45,28 @@ export default function Timetable({ token }) {
     }
   };
 
-  // Prepare days and times for table
-  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  // Build unique time slots from startTime and endTime
-  const timeSlots = Array.from(new Set(entries.map(e => {
-    const st = e.startTime || '08:00';
-    const et = e.endTime || '08:00';
-    return `${st} - ${et}`;
-  }))).sort();
-
-  // Build timetable grid
-  const grid = timeSlots.map(slot => {
-    const row = { slot };
-    days.forEach(day => {
-      const entry = entries.find(e => {
-        const st = e.startTime || '08:00';
-        const et = e.endTime || '08:00';
-        return e.day === day && `${st} - ${et}` === slot;
+  // Delete timetable entry
+  const handleDelete = async (id) => {
+    try {
+      const res = await fetch(`/api/timetable/${id}`, {
+        method: 'DELETE',
+        headers: { 'x-auth-token': token }
       });
-      row[day] = entry ? entry.subject : '';
-    });
-    return row;
+      if (res.ok) {
+        setEntries(entries.filter(e => e._id !== id));
+      }
+    } catch {
+      setError('Delete failed');
+    }
+  };
+  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  // For each day, get subjects sorted by start time
+  const daySubjects = {};
+  days.forEach(day => {
+    daySubjects[day] = entries
+      .filter(e => e.day === day)
+      .sort((a, b) => (a.startTime || '').localeCompare(b.startTime || ''));
   });
 
   return (
@@ -98,19 +99,35 @@ export default function Timetable({ token }) {
           <table className="w-full text-center border">
             <thead>
               <tr className="text-purple-700 bg-purple-50">
-                <th className="border px-2 py-1">Time</th>
                 {days.map(day => <th key={day} className="border px-2 py-1">{day}</th>)}
               </tr>
             </thead>
             <tbody>
-              {grid.map((row, idx) => (
-                <tr key={idx} className="hover:bg-purple-50 transition">
-                  <td className="border px-2 py-1 font-semibold">{row.slot}</td>
-                  {days.map(day => (
-                    <td key={day} className="border px-2 py-1">{row[day]}</td>
-                  ))}
-                </tr>
-              ))}
+              <tr>
+                {days.map(day => (
+                  <td key={day} className="border px-2 py-1 align-top">
+                    {daySubjects[day].length === 0 ? (
+                      <span className="text-gray-400">No subjects</span>
+                    ) : (
+                      <ul className="space-y-2">
+                        {daySubjects[day].map((entry, idx) => (
+                          <li key={entry._id || idx} className="bg-purple-50 rounded-lg p-2 shadow flex flex-col items-center relative">
+                            <button
+                              className="absolute top-1 right-1 text-gray-400 hover:text-gray-600 text-xs"
+                              title="Delete"
+                              onClick={() => handleDelete(entry._id)}
+                            >
+                              &#10005;
+                            </button>
+                            <span className="font-semibold text-purple-700">{entry.subject}</span>
+                            <span className="text-sm text-gray-600 mt-1">{entry.startTime} - {entry.endTime}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </td>
+                ))}
+              </tr>
             </tbody>
           </table>
         </div>
