@@ -74,7 +74,7 @@ export default function Schedule({ token }) {
   };
 
   return (
-    <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="max-w-2xl mx-auto">
+    <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="max-w-2xl mx-auto mt-8">
       <h2 className="text-3xl font-bold text-purple-700 mb-6">Daily Schedule</h2>
       <div className="bg-white rounded-xl shadow p-6 mb-6">
         <div className="w-full flex flex-row gap-3 items-center mb-2">

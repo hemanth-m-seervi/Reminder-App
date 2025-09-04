@@ -69,7 +69,7 @@ export default function Exams({ token }) {
 
   return (
     <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="max-w-3xl mx-auto px-4">
-      <h2 className="text-4xl font-extrabold text-purple-700 mb-8 text-center drop-shadow">Exams</h2>
+      <h2 className="text-3xl font-bold text-purple-700 mb-6">Exams</h2>
       <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
         <form className="flex gap-4 mb-6" onSubmit={handleAddExam}>
           <input name="name" value={examForm.name} onChange={handleExamChange} placeholder="Exam Name" className="input border-2 border-purple-300 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-500 transition" />

@@ -14,7 +14,7 @@ export default function Home() {
   const [showCurrency, setShowCurrency] = useState(false);
   return (
     <>
-      <motion.div initial={{ opacity: 0, y: 0 }} animate={{ opacity: 1, y: -30 }} transition={{ duration: 0.6 }} className="flex flex-col items-center h-full pt-12">
+  <motion.div initial={{ opacity: 0, y: 0 }} animate={{ opacity: 1, y: -30 }} transition={{ duration: 0.6 }} className="flex flex-col items-center h-full pt-12 ml-64">
         <div className="flex flex-row items-start justify-center w-full">
           {/* Welcome message and logo on the left */}
           <div className="flex flex-col items-start justify-center mr-32">

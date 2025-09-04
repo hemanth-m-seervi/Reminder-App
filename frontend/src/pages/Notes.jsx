@@ -7,7 +7,7 @@ export default function Notes({ token }) {
   // Delete note or PDF
   const handleDeleteNote = async (noteId, subject, noteObjIdx) => {
     try {
-  const res = await fetch(`${API_BASE}/api/notes/note`, {
+            const res = await fetch(`${API_BASE}/api/notes/note`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -152,9 +152,15 @@ export default function Notes({ token }) {
   };
 
   return (
-    <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="max-w-5xl mx-auto">
-      <h2 className="text-4xl font-extrabold text-purple-800 mb-8 text-center tracking-tight">Notes Organizer</h2>
-      <div className="flex gap-8">
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="min-h-screen ml-35 flex justify-center items-start pt-8 w-full"
+          >
+            <div className="max-w-5xl w-full">
+      <h2 className="text-3xl font-bold text-purple-700 mb-6">Notes Organizer</h2>
+      <div className="flex gap-8 ">
         {/* Sidebar: Classes/Sems */}
         <div className="w-64 bg-white rounded-2xl shadow-lg p-4 flex flex-col">
           <h3 className="text-xl font-bold text-purple-700 mb-4">Classes/Sems</h3>
@@ -313,7 +319,8 @@ export default function Notes({ token }) {
           )}
           {error && <div className="text-red-500 text-sm mt-4">{error}</div>}
         </div>
-      </div>
-  </motion.div>
+           </div>
+         </div>
+       </motion.div>
   );
 }

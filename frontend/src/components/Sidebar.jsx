@@ -13,7 +13,7 @@ const navItems = [
 
 export default function Sidebar() {
   return (
-    <aside className="w-64 bg-white shadow-lg rounded-r-3xl flex flex-col py-8 px-4 animate-fade-in">
+    <aside className="w-64 bg-white shadow-lg rounded-r-3xl flex flex-col py-8 px-4 animate-fade-in fixed top-0 left-0 h-screen z-40">
       <div className="mb-10 text-center">
         <h1 className="text-3xl font-bold text-purple-700">Remin</h1>
         <p className="text-sm text-gray-500">College Manager</p>

@@ -76,7 +76,7 @@ function Reminders() {
   const missedReminders = reminders.filter(r => r.missed && !r.completed);
 
   return (
-    <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="max-w-2xl mx-auto">
+    <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="max-w-2xl mx-auto mt-8">
       <h2 className="text-3xl font-bold text-purple-700 mb-6">Reminders & Deadlines</h2>
       <div className="bg-white rounded-xl shadow p-6 mb-6">
         <div className="flex justify-between items-center mb-4">

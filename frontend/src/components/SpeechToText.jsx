@@ -80,9 +80,7 @@ export default function SpeechToText() {
 
   return (
     <div className="w-full min-h-[40vh] bg-gradient-to-br from-purple-100 via-blue-50 to-purple-50 flex flex-col items-center justify-center rounded-2xl shadow-lg p-8 text-gray-900 border-2 border-purple-200">
-      <h1 className="text-2xl font-extrabold mb-4 text-purple-800 tracking-tight drop-shadow">
-        Speech-<span className="text-pink-500">To</span>-Text
-      </h1>
+      
 
       <button
         onClick={handleRecord}

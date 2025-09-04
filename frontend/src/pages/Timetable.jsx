@@ -72,7 +72,8 @@ export default function Timetable({ token }) {
   });
 
   return (
-    <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="max-w-4xl mx-auto">
+    <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="min-h-screen ml-64 flex pt-16">
+      <div className="max-w-4xl w-full mx-auto">
       <h2 className="text-3xl font-bold text-purple-700 mb-6">College Timetable</h2>
       <div className="bg-white rounded-xl shadow p-6 mb-6">
         <div className="flex gap-4 mb-4 flex-wrap">
@@ -133,6 +134,7 @@ export default function Timetable({ token }) {
             </tbody>
           </table>
         </div>
+      </div>
       </div>
     </motion.div>
   );

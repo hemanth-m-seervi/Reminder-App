@@ -124,9 +124,9 @@ export default function MarksEntry({ token }) {
   const selectedNote = marksNotes.find(n => n.examName === selectedExam);
 
   return (
-    <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="max-w-2xl mx-auto">
-      <h2 className="text-3xl font-bold text-purple-700 mb-6">Marks Entry</h2>
-      <div className="bg-white rounded-xl shadow p-6 mb-6">
+    <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="max-w-2xl mx-auto mt-8">
+      <h2 className="text-3xl font-bold text-purple-700 mb-6 ">Marks Entry</h2>
+      <div className="bg-white rounded-xl shadow p-6 mb-6 ">
         <h3 className="text-xl font-bold text-purple-700 mb-2">Create or Select Exam Session</h3>
         <div className="flex gap-2 mb-4">
           <input
