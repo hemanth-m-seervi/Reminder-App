@@ -2,6 +2,25 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 export default function Notes({ token }) {
+  // Delete note or PDF
+  const handleDeleteNote = async (noteId, subject, noteObjIdx) => {
+    try {
+      const res = await fetch(`/api/notes/note`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token
+        },
+        body: JSON.stringify({ noteId, subject, noteObjIdx })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setNotes(notes.map(n => n._id === data._id ? data : n));
+      }
+    } catch {
+      setError('Delete failed');
+    }
+  };
   const [notes, setNotes] = useState([]); // Array of class/sem notes
   const [classForm, setClassForm] = useState({ classOrSem: '' });
   const [subjectForm, setSubjectForm] = useState({ subject: '' });
@@ -258,27 +277,23 @@ export default function Notes({ token }) {
                       ) : (
                         <ul className="ml-2 space-y-2">
                           {s.notes.map((noteObj, k) => (
-                            <li key={k} className="bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg p-3 shadow flex items-center justify-between">
-                              <span className="text-gray-800 font-medium">{noteObj.note || (noteObj.pdfUrl ? noteObj.pdfUrl.split('/').pop() : '')}</span>
-                              {noteObj.pdfUrl && (
-                                (() => {
-                                  const url = noteObj.pdfUrl;
-                                  const isPdf = url.endsWith('.pdf');
-                                  const isDoc = url.endsWith('.doc') || url.endsWith('.docx') || url.endsWith('.ppt') || url.endsWith('.pptx');
-                                  const viewerUrl = isDoc
-                                    ? `https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(url)}`
-                                    : url;
-                                  return (
-                                    <a
-                                      href={viewerUrl}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="ml-4 text-blue-600 underline font-semibold"
-                                    >
-                                      {noteObj.note ? (isPdf ? 'View PDF' : isDoc ? 'View File' : 'View') : url.split('/').pop()}
-                                    </a>
-                                  );
-                                })()
+                            <li key={k} className="bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg p-3 shadow flex items-center justify-between relative">
+                              <button
+                                className="mr-3 text-gray-400 hover:text-gray-600 text-xs"
+                                title="Delete"
+                                onClick={() => handleDeleteNote(n._id, s.subject, k)}
+                              >&#10005;</button>
+                              {noteObj.pdfUrl ? (
+                                <a
+                                  href={noteObj.pdfUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="ml-4 text-blue-600 underline font-semibold"
+                                >
+                                  {noteObj.pdfUrl.split('/').pop()}
+                                </a>
+                              ) : (
+                                <span className="text-gray-800 font-medium">{noteObj.note}</span>
                               )}
                             </li>
                           ))}

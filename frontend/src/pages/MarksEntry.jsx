@@ -177,7 +177,14 @@ export default function MarksEntry({ token }) {
                 {/* Show details below the selected session card only */}
                 {selectedExam === note.examName && (
                   <div className="mt-2 mb-4">
-                    <h4 className="text-lg font-semibold text-purple-700 mb-2">Subjects in {note.examName}</h4>
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-lg font-semibold text-purple-700">Subjects in {note.examName}</h4>
+                      {!showAddSubjectForm && (
+                        <button type="button" className="btn-primary px-2 py-1 rounded bg-blue-600 text-white font-semibold text-xs hover:bg-blue-700 transition ml-4" onClick={() => setShowAddSubjectForm(true)}>
+                          Add Subject
+                        </button>
+                      )}
+                    </div>
                     {note.subjects.length > 0 ? (
                       <table className="w-full text-left border border-purple-100 rounded-lg mb-2">
                         <thead>
@@ -205,41 +212,35 @@ export default function MarksEntry({ token }) {
                     ) : (
                       <div className="text-gray-500 mb-2">No subjects added yet.</div>
                     )}
-                    {/* Add Subject Button and Form */}
-                    <div className="mt-4">
-                      {!showAddSubjectForm ? (
-                        <button type="button" className="btn-primary px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition" onClick={() => setShowAddSubjectForm(true)}>
-                          Add Subject
+                    {/* Add Subject Form */}
+                    {showAddSubjectForm && (
+                      <div className="flex gap-2 mb-2 mt-2">
+                        <input
+                          value={newSubject.subject}
+                          onChange={e => setNewSubject({ ...newSubject, subject: e.target.value })}
+                          placeholder="Subject Name"
+                          className="input rounded-lg border-2 border-purple-200 px-4 py-2"
+                        />
+                        <input
+                          value={newSubject.totalMarks}
+                          onChange={e => setNewSubject({ ...newSubject, totalMarks: e.target.value })}
+                          placeholder="Total Marks"
+                          type="number"
+                          className="input rounded-lg border-2 border-purple-200 px-4 py-2 w-24"
+                        />
+                        <input
+                          value={newSubject.marks}
+                          onChange={e => setNewSubject({ ...newSubject, marks: e.target.value })}
+                          placeholder="Marks Scored"
+                          type="number"
+                          className="input rounded-lg border-2 border-purple-200 px-4 py-2 w-24"
+                        />
+                        <button type="button" onClick={handleAddSubject} className="btn-primary flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                          Save
                         </button>
-                      ) : (
-                        <div className="flex gap-2 mb-2 mt-2">
-                          <input
-                            value={newSubject.subject}
-                            onChange={e => setNewSubject({ ...newSubject, subject: e.target.value })}
-                            placeholder="Subject Name"
-                            className="input rounded-lg border-2 border-purple-200 px-4 py-2"
-                          />
-                          <input
-                            value={newSubject.totalMarks}
-                            onChange={e => setNewSubject({ ...newSubject, totalMarks: e.target.value })}
-                            placeholder="Total Marks"
-                            type="number"
-                            className="input rounded-lg border-2 border-purple-200 px-4 py-2 w-24"
-                          />
-                          <input
-                            value={newSubject.marks}
-                            onChange={e => setNewSubject({ ...newSubject, marks: e.target.value })}
-                            placeholder="Marks Scored"
-                            type="number"
-                            className="input rounded-lg border-2 border-purple-200 px-4 py-2 w-24"
-                          />
-                          <button type="button" onClick={handleAddSubject} className="btn-primary flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
-                            Save
-                          </button>
-                        </div>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

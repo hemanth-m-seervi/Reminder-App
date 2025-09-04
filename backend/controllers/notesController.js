@@ -1,3 +1,21 @@
+// Delete a note or PDF from a subject session
+exports.deleteNoteFromSubject = async (req, res) => {
+  try {
+    const { noteId, subject, noteObjIdx } = req.body;
+    const noteDoc = await Note.findOne({ _id: noteId, user: req.user.id });
+    if (!noteDoc) return res.status(404).json({ msg: 'Class/Sem not found' });
+    const subjectSession = noteDoc.subjects.find(s => s.subject === subject);
+    if (!subjectSession) return res.status(404).json({ msg: 'Subject not found' });
+    if (typeof noteObjIdx !== 'number' || noteObjIdx < 0 || noteObjIdx >= subjectSession.notes.length) {
+      return res.status(400).json({ msg: 'Invalid note index' });
+    }
+    subjectSession.notes.splice(noteObjIdx, 1);
+    await noteDoc.save();
+    res.json(noteDoc);
+  } catch (err) {
+    res.status(500).json({ msg: 'Server error', error: err.message });
+  }
+};
 const Note = require('../models/Note');
 const cloudinary = require('../utils/cloudinary');
 

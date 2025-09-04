@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
-const { getNotes, addNote, addNotePdf, createClassOrSem, addSubjectSession, addNoteToSubject, addPdfToSubject } = require('../controllers/notesController');
+const { getNotes, addNote, addNotePdf, createClassOrSem, addSubjectSession, addNoteToSubject, addPdfToSubject, deleteNoteFromSubject } = require('../controllers/notesController');
+// Delete note or PDF from subject session
+router.delete('/note', auth, deleteNoteFromSubject);
 const upload = require('../utils/multer');
 
 
