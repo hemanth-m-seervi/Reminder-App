@@ -1,5 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 function Reminders() {
   const [reminders, setReminders] = useState([]);
@@ -9,7 +11,7 @@ function Reminders() {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    fetch('/api/reminders', {
+  fetch(`${API_BASE}/api/reminders`, {
       headers: { 'x-auth-token': token }
     })
       .then(res => res.json())
@@ -31,7 +33,7 @@ function Reminders() {
     setError('');
     if (form.title && form.deadline) {
       try {
-        const res = await fetch('/api/reminders', {
+  const res = await fetch(`${API_BASE}/api/reminders`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -54,7 +56,7 @@ function Reminders() {
   const handleComplete = async idx => {
     try {
       const reminder = reminders[idx];
-      const res = await fetch(`/api/reminders/${reminder._id}`, {
+  const res = await fetch(`${API_BASE}/api/reminders/${reminder._id}`, {
         method: 'PATCH',
         headers: { 'x-auth-token': token }
       });

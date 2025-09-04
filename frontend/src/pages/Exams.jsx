@@ -1,6 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import ExamDetails from '../components/ExamDetails';
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 export default function Exams({ token }) {
   const [exams, setExams] = useState([]);
@@ -10,7 +12,7 @@ export default function Exams({ token }) {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch('/api/exams', {
+  fetch(`${API_BASE}/api/exams`, {
       headers: { 'x-auth-token': token }
     })
       .then(res => res.json())
@@ -23,7 +25,7 @@ export default function Exams({ token }) {
     setError('');
     if (examForm.name) {
       try {
-        const res = await fetch('/api/exams', {
+  const res = await fetch(`${API_BASE}/api/exams`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -46,7 +48,7 @@ export default function Exams({ token }) {
 
   const handleAddDetail = async (examId, detail) => {
     try {
-      const res = await fetch(`/api/exams/${examId}/details`, {
+  const res = await fetch(`${API_BASE}/api/exams/${examId}/details`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,5 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 export default function Timetable({ token }) {
   const [entries, setEntries] = useState([]);
@@ -7,7 +9,7 @@ export default function Timetable({ token }) {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch('/api/timetable', {
+  fetch(`${API_BASE}/api/timetable`, {
       headers: { 'x-auth-token': token }
     })
       .then(res => res.json())
@@ -19,7 +21,7 @@ export default function Timetable({ token }) {
     setError('');
     if (form.day && form.subject && form.startTime && form.endTime) {
       try {
-        const res = await fetch('/api/timetable', {
+  const res = await fetch(`${API_BASE}/api/timetable`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -48,7 +50,7 @@ export default function Timetable({ token }) {
   // Delete timetable entry
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`/api/timetable/${id}`, {
+  const res = await fetch(`${API_BASE}/api/timetable/${id}`, {
         method: 'DELETE',
         headers: { 'x-auth-token': token }
       });

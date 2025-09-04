@@ -1,11 +1,13 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 export default function Notes({ token }) {
   // Delete note or PDF
   const handleDeleteNote = async (noteId, subject, noteObjIdx) => {
     try {
-      const res = await fetch(`/api/notes/note`, {
+  const res = await fetch(`${API_BASE}/api/notes/note`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -32,7 +34,7 @@ export default function Notes({ token }) {
   const fileInputRef = useRef();
 
   useEffect(() => {
-    fetch('/api/notes', {
+  fetch(`${API_BASE}/api/notes`, {
       headers: { 'x-auth-token': token }
     })
       .then(res => res.json())
@@ -44,7 +46,7 @@ export default function Notes({ token }) {
     setError('');
     if (classForm.classOrSem) {
       try {
-        const res = await fetch('/api/notes/class', {
+  const res = await fetch(`${API_BASE}/api/notes/class`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -70,7 +72,7 @@ export default function Notes({ token }) {
     setError('');
     if (selectedClassId && subjectForm.subject) {
       try {
-        const res = await fetch('/api/notes/subject', {
+  const res = await fetch(`${API_BASE}/api/notes/subject`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -96,7 +98,7 @@ export default function Notes({ token }) {
     setError('');
     if (selectedClassId && selectedSubject && noteForm.note) {
       try {
-        const res = await fetch('/api/notes/note', {
+  const res = await fetch(`${API_BASE}/api/notes/note`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -127,7 +129,7 @@ export default function Notes({ token }) {
       formData.append('note', noteForm.note);
       formData.append('pdf', pdf);
       try {
-        const res = await fetch('/api/notes/pdf', {
+  const res = await fetch(`${API_BASE}/api/notes/pdf`, {
           method: 'POST',
           headers: {
             'x-auth-token': token
@@ -162,7 +164,7 @@ export default function Notes({ token }) {
               setError('');
               if (classForm.classOrSem) {
                 try {
-                  const res = await fetch('/api/notes/class', {
+                  const res = await fetch(`${API_BASE}/api/notes/class`, {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json',
@@ -227,7 +229,7 @@ export default function Notes({ token }) {
                       setError("");
                       if (selectedClassId && subjectForm.subject) {
                         try {
-                          const res = await fetch('/api/notes/subject', {
+                          const res = await fetch(`${API_BASE}/api/notes/subject`, {
                             method: 'POST',
                             headers: {
                               'Content-Type': 'application/json',

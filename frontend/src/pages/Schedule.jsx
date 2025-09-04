@@ -1,5 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 // Additional imports if necessary
 export default function Schedule({ token }) {
@@ -36,7 +38,7 @@ export default function Schedule({ token }) {
     : sortedSchedule;
 
   useEffect(() => {
-    fetch('/api/schedule', {
+  fetch(`${API_BASE}/api/schedule`, {
       headers: { 'x-auth-token': token }
     })
       .then(res => res.json())
@@ -49,7 +51,7 @@ export default function Schedule({ token }) {
   // Ensure form validation
   if (form.time && form.task && form.date) {
       try {
-        const res = await fetch('/api/schedule', {
+  const res = await fetch(`${API_BASE}/api/schedule`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -127,7 +129,7 @@ export default function Schedule({ token }) {
                     <button
                       onClick={async () => {
                         try {
-                          const res = await fetch(`/api/schedule/${task._id}`, {
+                          const res = await fetch(`${API_BASE}/api/schedule/${task._id}`, {
                             method: 'DELETE',
                             headers: { 'x-auth-token': token }
                           });

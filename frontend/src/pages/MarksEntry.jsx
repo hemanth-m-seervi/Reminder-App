@@ -1,5 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 export default function MarksEntry({ token }) {
   const [marksNotes, setMarksNotes] = useState([]);
@@ -11,7 +13,7 @@ export default function MarksEntry({ token }) {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch('/api/marks-note', {
+  fetch(`${API_BASE}/api/marks-note`, {
       headers: { 'x-auth-token': token }
     })
       .then(res => res.json())
@@ -26,7 +28,7 @@ export default function MarksEntry({ token }) {
       return;
     }
     try {
-      const res = await fetch('/api/marks-note', {
+  const res = await fetch(`${API_BASE}/api/marks-note`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -55,7 +57,7 @@ export default function MarksEntry({ token }) {
       return;
     }
     try {
-      const res = await fetch(`/api/marks-note/${selectedExam}/subject`, {
+  const res = await fetch(`${API_BASE}/api/marks-note/${selectedExam}/subject`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -79,7 +81,7 @@ export default function MarksEntry({ token }) {
   const handleEditSubject = async (subject, totalMarks, marks) => {
     setError('');
     try {
-      const res = await fetch(`/api/marks-note/${selectedExam}/subject/${subject}`, {
+  const res = await fetch(`${API_BASE}/api/marks-note/${selectedExam}/subject/${subject}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -102,7 +104,7 @@ export default function MarksEntry({ token }) {
   const handleDeleteSubject = async (subject) => {
     setError('');
     try {
-      const res = await fetch(`/api/marks-note/${selectedExam}/subject/${subject}`, {
+  const res = await fetch(`${API_BASE}/api/marks-note/${selectedExam}/subject/${subject}`, {
         method: 'DELETE',
         headers: {
           'x-auth-token': token
