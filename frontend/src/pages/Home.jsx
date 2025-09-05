@@ -1,24 +1,18 @@
 import React, { useState } from 'react';
-import TypingTest from '../components/TypingTest';
 import { motion } from 'framer-motion';
-import ImageSearch from '../components/ImageSearch';
 import { FaUserCircle, FaRegCalendarAlt, FaCalculator, FaVolumeUp, FaMicrophone, FaGlobe, FaMoneyBillWave } from 'react-icons/fa';
-import TextToSpeech from '../components/TextToSpeech';
-import SpeechToText from '../components/SpeechToText';
-import LanguageTranslator from '../components/LanguageTranslator';
-import CurrencyConverter from '../components/CurrencyConverter';
-import Dictionary from '../components/Dictionary';
 
-export default function Home() {
-  const [showTypingTest, setShowTypingTest] = useState(false);
-  const [showCalculator, setShowCalculator] = useState(false);
-  const [showTTS, setShowTTS] = useState(false);
-  const [showSTT, setShowSTT] = useState(false);
-  const [showTranslator, setShowTranslator] = useState(false);
-  const [showCurrency, setShowCurrency] = useState(false);
-  const [showImageSearch, setShowImageSearch] = useState(false);
-  const [showDictionary, setShowDictionary] = useState(false);
-  const [calendarMonth, setCalendarMonth] = useState(8); 
+export default function Home({
+  setShowTypingTest,
+  setShowCalculator,
+  setShowTTS,
+  setShowSTT,
+  setShowTranslator,
+  setShowCurrency,
+  setShowImageSearch,
+  setShowDictionary
+}) {
+  const [calendarMonth, setCalendarMonth] = useState(8);
   const [calendarYear, setCalendarYear] = useState(2025);
   return (
     <>
@@ -104,16 +98,7 @@ export default function Home() {
                 <span className="text-xs text-gray-500 mt-1">Test your typing speed</span>
               </button>
             </div>
-      {/* Typing Test Modal */}
-      {showTypingTest && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{backdropFilter: 'blur(8px)', background: 'rgba(0,0,0,0.15)'}}>
-          <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8 w-full max-w-xs sm:max-w-2xl fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center" style={{maxHeight: '80vh', overflowY: 'auto'}}>
-            <button className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-xl" onClick={() => setShowTypingTest(false)}>&#10005;</button>
-            <h4 className="text-lg font-bold text-cyan-700 mb-4 text-center">Typing Test</h4>
-            <TypingTest />
-          </div>
-        </div>
-      )}
+
             {/* Image Generator Card */}
             <div className="bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl shadow-lg p-4 flex flex-col items-center w-full max-w-xs hover:scale-105 transition-transform cursor-pointer border border-blue-200">
               <button
@@ -142,26 +127,8 @@ export default function Home() {
                 <span className="text-xs text-gray-500 mt-1">Find word meanings</span>
               </button>
             </div>
-      {/* Image Generator Modal */}
-      {showImageSearch && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-transparent" style={{backdropFilter: 'blur(8px)', background: 'rgba(0,0,0,0.15)'}}>
-          <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8 w-full max-w-xs sm:max-w-4xl relative overflow-y-auto max-h-[80vh]">
-            <button className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-xl" onClick={() => setShowImageSearch(false)}>&#10005;</button>
-            <h4 className="text-lg font-bold text-yellow-700 mb-4 text-center">Image Generator</h4>
-            <ImageSearch />
-          </div>
-        </div>
-      )}
-        {/* Dictionary Modal */}
-        {showDictionary && (
-          <div className="fixed inset-0 flex items-center justify-center z-50 bg-transparent" style={{backdropFilter: 'blur(8px)', background: 'rgba(0,0,0,0.15)'}}>
-            <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8 w-full max-w-xs sm:max-w-md relative overflow-y-auto max-h-[80vh]">
-              <button className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-xl" onClick={() => setShowDictionary(false)}>&#10005;</button>
-              <h4 className="text-lg font-bold text-purple-700 mb-4 text-center">Dictionary</h4>
-              <Dictionary />
-            </div>
-          </div>
-        )}
+
+
             {/* Currency Converter Card */}
             <div className="bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl shadow-lg p-4 flex flex-col items-center w-full max-w-xs hover:scale-105 transition-transform cursor-pointer border border-blue-200">
               <button
@@ -176,16 +143,7 @@ export default function Home() {
                 <span className="text-xs text-gray-500 mt-1">Convert currencies</span>
               </button>
             </div>
-      {/* Currency Converter Modal */}
-      {showCurrency && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-transparent" style={{backdropFilter: 'blur(8px)', background: 'rgba(0,0,0,0.15)'}}>
-          <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8 w-full max-w-xs sm:max-w-md relative">
-            <button className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-xl" onClick={() => setShowCurrency(false)}>&#10005;</button>
-            <h4 className="text-lg font-bold text-green-700 mb-4 text-center">Currency Converter</h4>
-            <CurrencyConverter />
-          </div>
-        </div>
-      )}
+
             {/* Calculator Card */}
             <div className="bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl shadow-lg p-4 flex flex-col items-center w-full max-w-xs hover:scale-105 transition-transform cursor-pointer border border-blue-200">
               <button
@@ -242,82 +200,16 @@ export default function Home() {
                 <span className="text-xs text-gray-500 mt-1">Translate text between languages</span>
               </button>
             </div>
-            {/* Language Translator Modal */}
-            {showTranslator && (
-              <div className="fixed inset-0 flex items-center justify-center z-50 bg-transparent" style={{backdropFilter: 'blur(8px)', background: 'rgba(0,0,0,0.15)'}}>
-                <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8 w-full max-w-xs sm:max-w-2xl relative">
-                  <button className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-xl" onClick={() => setShowTranslator(false)}>&#10005;</button>
-                  <h4 className="text-lg font-bold text-purple-700 mb-4 text-center">Language Translator</h4>
-                  <LanguageTranslator />
-                </div>
-              </div>
-            )}
+
           </div>
         </div>
       </motion.div>
 
-      {/* Calculator Modal */}
-      {showCalculator && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-transparent" style={{backdropFilter: 'blur(8px)', background: 'rgba(0,0,0,0.15)'}}>
-          <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8 w-full max-w-xs sm:max-w-80 relative">
-            <button className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-xl" onClick={() => setShowCalculator(false)}>&#10005;</button>
-            <h4 className="text-lg font-bold text-purple-700 mb-4 text-center">Calculator</h4>
-            <Calculator />
-          </div>
-        </div>
-      )}
-      {/* Text-to-Speech Modal */}
-      {showTTS && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-transparent" style={{backdropFilter: 'blur(8px)', background: 'rgba(0,0,0,0.15)'}}>
-          <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-2xl relative">
-            <button className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-xl" onClick={() => setShowTTS(false)}>&#10005;</button>
-            <h4 className="text-lg font-bold text-pink-700 mb-4 text-center">Text to Speech</h4>
-            <TextToSpeech />
-          </div>
-        </div>
-      )}
-            {/* Speech-to-Text Modal */}
-            {showSTT && (
-              <div className="fixed inset-0 flex items-center justify-center z-50 bg-transparent" style={{backdropFilter: 'blur(8px)', background: 'rgba(0,0,0,0.15)'}}>
-                <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8 w-full max-w-xs sm:max-w-2xl relative">
-                  <button className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-xl" onClick={() => setShowSTT(false)}>&#10005;</button>
-                  <h4 className="text-lg font-bold text-blue-700 mb-4 text-center">Speech to Text</h4>
-                  <SpeechToText />
-                </div>
-              </div>
-            )}
+
+      
+
     </>
   );
 }
 
-function Calculator() {
-  const [input, setInput] = useState('');
-  const handleClick = val => setInput(input + val);
-  const handleClear = () => setInput('');
-  const handleEqual = () => {
-    try {
-      setInput(eval(input).toString());
-    } catch {
-      setInput('Error');
-    }
-  };
-  return (
-    <div className="flex flex-col items-center">
-      <input
-        type="text"
-        value={input}
-        readOnly
-        className="mb-4 p-2 border rounded w-full text-lg text-center bg-purple-50"
-      />
-      <div className="grid grid-cols-4 gap-2 mb-2">
-        {["7","8","9","/","4","5","6","*","1","2","3","-","0",".","=","+"]
-          .map((val, idx) => (
-            val === "="
-              ? <button key={idx} className="w-12 h-12 rounded-full bg-purple-500 text-white font-bold shadow-md border border-purple-300 hover:bg-purple-700 transition duration-150" onClick={handleEqual}>=</button>
-              : <button key={idx} className="w-12 h-12 rounded-full bg-white text-purple-700 font-bold shadow-md border border-purple-200 hover:bg-purple-200 hover:text-purple-900 transition duration-150" onClick={() => handleClick(val)}>{val}</button>
-          ))}
-      </div>
-      <button className="mt-2 px-4 py-1 rounded bg-red-400 text-white font-semibold" onClick={handleClear}>Clear</button>
-    </div>
-  );
-}
+

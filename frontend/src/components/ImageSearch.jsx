@@ -30,7 +30,7 @@ export default function ImageSearch() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start pt-16 bg-gradient-to-br from-purple-100 via-blue-50 to-purple-50">
+    <div className="flex flex-col items-center justify-start bg-gradient-to-br from-purple-100 via-blue-50 to-purple-50">
       <form onSubmit={handleSubmit} className="flex flex-wrap gap-4 mb-8 max-w-full">
         <input
           type="text"
