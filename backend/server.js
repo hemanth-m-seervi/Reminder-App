@@ -27,6 +27,11 @@ app.use('/api/marks-note', marksNoteRoutes);
 
 const PORT = process.env.PORT || 5000;
 
+// Add root route handler to avoid 404 on '/'
+app.get('/', (req, res) => {
+  res.send('Backend server is running');
+});
+
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
