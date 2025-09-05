@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
+// No Topbar import needed
 import Home from './pages/Home';
 import Timetable from './pages/Timetable';
 import Exams from './pages/Exams';
@@ -33,15 +34,15 @@ function App() {
             onClick={() => setIsSidebarOpen(false)}
           ></div>
         )}
-        <div className={`flex-1 p-4 md:p-6 ${isSidebarOpen ? 'md:ml-64' : ''} transition-all duration-300 overflow-x-hidden`}>
-          {token && (
-            <div className="flex justify-between items-center mb-4">
-              <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="md:hidden btn-secondary px-3 py-2 rounded-lg text-purple-700 border border-purple-300 hover:bg-purple-100 transition">
-                <FaBars />
-              </button>
-              <button onClick={handleLogout} className="btn-secondary px-3 py-2 rounded-lg text-purple-700 border border-purple-300 hover:bg-purple-100 transition text-sm">Logout</button>
-            </div>
-          )}
+        {token && (
+          <button
+            onClick={handleLogout}
+            className="absolute top-4 right-6 z-50 px-4 py-2 rounded-lg bg-purple-100 text-purple-700 font-semibold border border-purple-300 hover:bg-purple-200 transition text-sm shadow"
+          >
+            Logout
+          </button>
+        )}
+  <div className={`flex-1 p-4 md:p-6 mt-14 ${isSidebarOpen ? 'md:ml-64' : ''} transition-all duration-300 overflow-x-hidden`}>
           <Routes>
             <Route path="/auth" element={<Auth setToken={setToken} />} />
             <Route path="/" element={
