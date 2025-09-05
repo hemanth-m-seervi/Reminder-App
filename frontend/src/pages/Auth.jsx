@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
 export default function Auth({ setToken }) {
   const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({ name: '', email: '', password: '' });
@@ -15,7 +17,7 @@ export default function Auth({ setToken }) {
     setError('');
     setLoading(true);
     try {
-      const url = isLogin ? '/api/auth/login' : '/api/auth/register';
+      const url = isLogin ? `${API_BASE}/api/auth/login` : `${API_BASE}/api/auth/register`;
       const body = isLogin ? { email: form.email, password: form.password } : form;
       const res = await fetch(url, {
         method: 'POST',
