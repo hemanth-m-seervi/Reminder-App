@@ -191,7 +191,7 @@ export default function Notes({ token }) {
               }
             }} className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2 rounded-lg font-semibold shadow hover:from-purple-600 hover:to-blue-600 transition w-full">Add</button>
           </div>
-          <div className="flex-1 overflow-y-auto">
+          <div className="max-h-40 overflow-y-auto">
             {notes.length === 0 ? (
               <p className="text-gray-400">No classes/sems yet.</p>
             ) : (
