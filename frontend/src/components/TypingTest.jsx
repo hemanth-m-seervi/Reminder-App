@@ -116,9 +116,9 @@ export default function TypingTest() {
         autoFocus
         style={{position: 'absolute', opacity: 0, pointerEvents: 'none'}}
       />
-      <div className="content-box p-5 border-4 border-cyan-500 rounded-lg">
-    <div className="typing-text mb-4 cursor-pointer" onClick={() => inputRef.current && inputRef.current.focus()}>
-          <p id="paragraph" className="text-lg text-gray-300 font-mono tracking-normal">
+    <div className="content-box p-3 sm:p-5 border-4 border-cyan-500 rounded-lg">
+    <div className="typing-text mb-4 cursor-pointer overflow-x-auto" onClick={() => inputRef.current && inputRef.current.focus()}>
+          <p id="paragraph" className="text-base sm:text-lg text-gray-300 font-mono tracking-normal leading-relaxed whitespace-pre-wrap break-words">
             {activeParagraph.split("").map((char, idx) => {
               let className = "relative align-middle";
               let overlay = null;
@@ -133,7 +133,7 @@ export default function TypingTest() {
               }
               if (idx === charIndex) className += " active";
               return (
-                <span key={idx} className={className} style={{display: 'inline-block', minWidth: '1ch', position: 'relative', verticalAlign: 'middle', textAlign: 'center'}}>
+                <span key={idx} className={className} style={{display: 'inline-block', minWidth: '0.5ch', position: 'relative', verticalAlign: 'middle', textAlign: 'center'}}>
                   <span style={{visibility: overlay ? 'hidden' : 'visible'}}>{char}</span>
                   {overlay}
                 </span>

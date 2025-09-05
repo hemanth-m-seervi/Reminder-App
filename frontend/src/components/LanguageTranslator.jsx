@@ -62,15 +62,15 @@ export default function LanguageTranslator() {
             disabled
           />
         </div>
-        <div className="flex gap-4 items-center justify-between">
-          <div className="flex gap-2 items-center">
+        <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+          <div className="flex gap-2 items-center w-full sm:w-auto">
             <button className="text-purple-600 hover:text-purple-900" title="Speak" onClick={() => handleSpeak(fromText, fromLang)}>
               <i className="fas fa-volume-up"></i>
             </button>
             <button className="text-blue-600 hover:text-blue-900" title="Copy" onClick={() => handleCopy(fromText)}>
               <i className="fas fa-copy"></i>
             </button>
-            <select className="ml-2 border rounded px-2 py-1" value={fromLang} onChange={e => setFromLang(e.target.value)}>
+            <select className="flex-1 sm:flex-none border rounded px-2 py-1" value={fromLang} onChange={e => setFromLang(e.target.value)}>
               {Object.entries(countries).map(([code, name]) => (
                 <option key={code} value={code}>{name}</option>
               ))}
@@ -79,8 +79,8 @@ export default function LanguageTranslator() {
           <button className="text-gray-500 hover:text-gray-900 text-xl px-3" title="Exchange" onClick={handleExchange}>
             <i className="fas fa-exchange-alt"></i>
           </button>
-          <div className="flex gap-2 items-center">
-            <select className="mr-2 border rounded px-2 py-1" value={toLang} onChange={e => setToLang(e.target.value)}>
+          <div className="flex gap-2 items-center w-full sm:w-auto">
+            <select className="flex-1 sm:flex-none border rounded px-2 py-1" value={toLang} onChange={e => setToLang(e.target.value)}>
               {Object.entries(countries).map(([code, name]) => (
                 <option key={code} value={code}>{name}</option>
               ))}

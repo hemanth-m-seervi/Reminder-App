@@ -47,8 +47,8 @@ export default function CurrencyConverter() {
               className="w-full border-2 border-purple-200 rounded px-3 py-2 text-lg focus:border-purple-400"
             />
           </div>
-          <div className="flex items-center gap-4 justify-between">
-            <div className="flex flex-col items-center">
+          <div className="flex flex-col sm:flex-row items-center gap-4 justify-between">
+            <div className="flex flex-col items-center flex-shrink-0">
               <label className="text-sm font-semibold mb-1">From</label>
               <div className="flex items-center gap-2">
                 <img src={`https://flagsapi.com/${countryCode[fromCurrency]}/flat/64.png`} alt="flag" className="w-8 h-8 rounded" />
@@ -66,7 +66,7 @@ export default function CurrencyConverter() {
             <button type="button" className="text-purple-600 hover:text-purple-900 text-2xl px-2" title="Exchange" onClick={handleExchange}>
               <i className="fas fa-exchange-alt"></i>
             </button>
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center flex-shrink-0">
               <label className="text-sm font-semibold mb-1">To</label>
               <div className="flex items-center gap-2">
                 <img src={`https://flagsapi.com/${countryCode[toCurrency]}/flat/64.png`} alt="flag" className="w-8 h-8 rounded" />

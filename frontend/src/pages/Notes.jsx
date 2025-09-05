@@ -156,13 +156,13 @@ export default function Notes({ token }) {
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="min-h-screen ml-35 flex justify-center items-start pt-8 w-full"
+            className="min-h-screen md:ml-64 flex justify-center items-start pt-16 px-4 w-full"
           >
-            <div className="max-w-5xl w-full">
+            <div className="max-w-6xl w-full">
       <h2 className="text-3xl font-bold text-purple-700 mb-6">Notes Organizer</h2>
-      <div className="flex gap-8 ">
+      <div className="flex flex-col md:flex-row gap-8 ">
         {/* Sidebar: Classes/Sems */}
-        <div className="w-64 bg-white rounded-2xl shadow-lg p-4 flex flex-col">
+        <div className="w-full md:w-64 bg-white rounded-2xl shadow-lg p-4 flex flex-col">
           <h3 className="text-xl font-bold text-purple-700 mb-4">Classes/Sems</h3>
           <div className="mb-4">
             <input name="classOrSem" value={classForm.classOrSem} onChange={e => setClassForm({ classOrSem: e.target.value })} placeholder="Add new class/sem" className="border-2 border-purple-300 rounded-lg px-3 py-2 w-full mb-2" />
@@ -206,17 +206,17 @@ export default function Notes({ token }) {
           </div>
         </div>
         {/* Main Content: Subjects and Notes */}
-        <div className="flex-1 bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl shadow-lg p-8">
+        <div className="flex-1 bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl shadow-lg p-4 md:p-8 max-w-180">
           {selectedClassId ? (
             notes.filter(n => n._id === selectedClassId).map(n => (
               <div key={n._id}>
                 <h3 className="text-2xl font-bold text-purple-700 mb-4">{n.classOrSem}</h3>
                 {/* Subjects Dropdown and Add Button */}
-                <div className="mb-6 flex gap-2 items-center">
+                <div className="mb-6 flex flex-col sm:flex-row gap-2 items-start sm:items-center">
                   <select
                     value={selectedSubject || ''}
                     onChange={e => setSelectedSubject(e.target.value)}
-                    className="border-2 border-blue-300 rounded px-2 py-1 w-32 text-sm"
+                    className="border-2 border-blue-300 rounded px-2 py-1 w-full sm:w-32 text-sm"
                   >
                     <option value="">Select Subject</option>
                     {n.subjects.map((s, idx) => (
@@ -228,7 +228,7 @@ export default function Notes({ token }) {
                     value={subjectForm.subject}
                     onChange={e => setSubjectForm({ subject: e.target.value })}
                     placeholder="Add new subject"
-                    className="border-2 border-blue-300 rounded px-2 py-1 w-28 text-sm"
+                    className="border-2 border-blue-300 rounded px-2 py-1 w-full sm:w-28 text-sm"
                   />
                   <button
                     onClick={async () => {
@@ -262,7 +262,7 @@ export default function Notes({ token }) {
                         }
                       }
                     }}
-                    className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-2 py-1 rounded font-semibold shadow hover:from-blue-600 hover:to-purple-600 transition text-xs"
+                    className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-2 py-1 rounded font-semibold shadow hover:from-blue-600 hover:to-purple-600 transition text-xs self-start"
                   >
                     Add Subject
                   </button>

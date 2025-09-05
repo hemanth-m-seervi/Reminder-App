@@ -51,16 +51,14 @@ export default function TextToSpeech() {
           <select
             onChange={handleVoiceChange}
             value={selectedVoice}
-            className="text-purple-900 bg-purple-50 h-10 px-6 outline-none border-2 border-purple-200 rounded-full appearance-none shadow focus:border-purple-400 transition duration-150 text-lg"
-            style={{ minWidth: '260px', maxWidth: '380px' }}
+            className="text-purple-900 bg-purple-50 h-10 px-6 outline-none border-2 border-purple-200 rounded-full appearance-none shadow focus:border-purple-400 transition duration-150 text-lg w-full sm:w-auto sm:min-w-[260px] sm:max-w-[380px]"
           >
             {voices.map((voice, i) => (
               <option key={voice.name} value={i}>{voice.name} ({voice.lang})</option>
             ))}
           </select>
           <button
-            className="bg-gradient-to-r from-purple-500 via-blue-500 to-purple-400 hover:from-purple-600 hover:to-blue-600 text-white text-base px-4 py-1 rounded-full flex items-center font-semibold shadow transition-colors duration-150 border border-purple-200 drop-shadow"
-            style={{ minWidth: '90px', maxWidth: '120px' }}
+            className="bg-gradient-to-r from-purple-500 via-blue-500 to-purple-400 hover:from-purple-600 hover:to-blue-600 text-white text-base px-4 py-1 rounded-full flex items-center font-semibold shadow transition-colors duration-150 border border-purple-200 drop-shadow w-full sm:w-auto sm:min-w-[90px] sm:max-w-[120px]"
             onClick={handlePlay}
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 mr-1">

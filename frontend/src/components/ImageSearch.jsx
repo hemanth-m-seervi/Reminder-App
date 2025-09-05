@@ -31,15 +31,15 @@ export default function ImageSearch() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-start pt-16 bg-gradient-to-br from-purple-100 via-blue-50 to-purple-50">
-      <form onSubmit={handleSubmit} className="flex gap-4 mb-8">
+      <form onSubmit={handleSubmit} className="flex flex-wrap gap-4 mb-8 max-w-full">
         <input
           type="text"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           placeholder="Search images..."
-          className="border-2 border-purple-300 rounded-lg px-4 py-2 w-64 text-lg focus:outline-none focus:border-purple-500"
+          className="border-2 border-purple-300 rounded-lg px-4 py-2 w-full max-w-xs sm:max-w-md text-lg focus:outline-none focus:border-purple-500"
         />
-        <button type="submit" className="bg-purple-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-purple-700 transition">
+        <button type="submit" className="bg-purple-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-purple-700 transition flex-shrink-0">
           Search
         </button>
       </form>

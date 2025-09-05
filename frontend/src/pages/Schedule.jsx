@@ -73,10 +73,10 @@ export default function Schedule({ token }) {
   };
 
   return (
-    <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="max-w-2xl mx-auto mt-8">
+    <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="max-w-2xl mx-auto mt-8 px-4">
       <h2 className="text-3xl font-bold text-purple-700 mb-6">Daily Schedule</h2>
-      <div className="bg-white rounded-xl shadow p-6 mb-6">
-        <div className="w-full flex flex-row gap-3 items-center mb-2">
+      <div className="bg-white rounded-xl shadow p-4 mb-6">
+        <div className="w-full flex flex-col sm:flex-row gap-3 items-start mb-2">
           <input name="task" value={form.task} onChange={handleChange} placeholder="What to do" className="input rounded-lg border-2 border-purple-200 px-4 py-2 flex-1" />
           <input name="time" value={form.time} onChange={handleChange} placeholder="Time" className="input rounded-lg border-2 border-purple-200 px-4 py-2 flex-1" type="time" />
           <input name="date" value={form.date} onChange={handleChange} placeholder="Date" className="input rounded-lg border-2 border-purple-200 px-4 py-2 flex-1" type="date" />
@@ -95,7 +95,7 @@ export default function Schedule({ token }) {
         <ul className="space-y-2">
           {/* Upcoming schedule as first item in the list */}
           {upcoming && (
-            <li className="bg-yellow-100 border-l-4 border-yellow-500 rounded-lg p-3 mb-2 shadow flex items-center gap-2">
+            <li className="bg-yellow-100 border-l-4 border-yellow-500 rounded-lg p-3 mb-2 shadow flex flex-col sm:flex-row sm:items-center sm:gap-2">
               <button
                 onClick={async () => {
                   try {
@@ -114,8 +114,8 @@ export default function Schedule({ token }) {
               >
                 &#10005;
               </button>
-              <div className="flex flex-col md:flex-row md:justify-between md:items-center w-full">
-                <span className="font-semibold text-lg mb-1 md:mb-0">Upcoming: {upcoming.task}</span>
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center w-full">
+                <span className="font-semibold text-lg mb-1 sm:mb-0">Upcoming: {upcoming.task}</span>
                 <span className="text-sm text-gray-700">
                   {(() => {
                     const dateObj = new Date(`${upcoming.date}T${upcoming.time}`);
@@ -156,7 +156,7 @@ export default function Schedule({ token }) {
                  });
                }
                return (
-                 <li key={idx} className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl p-4 shadow flex flex-col md:flex-row md:items-center md:justify-between mb-2">
+                 <li key={idx} className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl p-4 shadow flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <button
                       onClick={async () => {
@@ -179,7 +179,7 @@ export default function Schedule({ token }) {
                     <span className="text-lg font-bold text-purple-700">{dateStr}</span>
                     <span className="text-md text-blue-700 font-semibold">{timeStr}</span>
                   </div>
-                  <span className="text-gray-700 mt-2 md:mt-0">{task.task}</span>
+                  <span className="text-gray-700 mt-2 sm:mt-0">{task.task}</span>
                 </li>
                );
             })}

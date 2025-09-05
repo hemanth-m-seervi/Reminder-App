@@ -68,12 +68,13 @@ export default function Exams({ token }) {
   };
 
   return (
-    <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="max-w-3xl mx-auto px-4">
+    <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="min-h-screen md:ml-64 flex pt-16 px-4">
+      <div className="max-w-4xl w-full mx-auto">
       <h2 className="text-3xl font-bold text-purple-700 mb-6">Exams</h2>
-      <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
-        <form className="flex gap-4 mb-6" onSubmit={handleAddExam}>
+      <div className="bg-white rounded-2xl shadow-lg p-4 md:p-8 mb-8">
+        <form className="flex flex-col sm:flex-row gap-4 mb-6" onSubmit={handleAddExam}>
           <input name="name" value={examForm.name} onChange={handleExamChange} placeholder="Exam Name" className="input border-2 border-purple-300 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-500 transition" />
-          <button type="submit" className="btn-primary py-2 px-6 rounded-lg bg-purple-600 text-white font-semibold hover:bg-purple-700 transition">Add Exam</button>
+          <button type="submit" className="btn-primary py-2 px-6 rounded-lg bg-purple-600 text-white font-semibold hover:bg-purple-700 transition self-start">Add Exam</button>
         </form>
         <div className="flex mb-4">
           <input
@@ -112,6 +113,7 @@ export default function Exams({ token }) {
               ))
           )}
         </div>
+      </div>
       </div>
     </motion.div>
   );
