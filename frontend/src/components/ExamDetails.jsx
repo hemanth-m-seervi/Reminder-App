@@ -55,7 +55,7 @@ export default function ExamDetails({ exam, onAddDetail }) {
           {exam.details && exam.details.length > 0 ? (
             [...exam.details]
               .sort((a, b) => {
-                // Sort by date, then time
+                
                 const dateA = new Date(a.date + 'T' + (a.time || '00:00'));
                 const dateB = new Date(b.date + 'T' + (b.time || '00:00'));
                 return dateA - dateB;

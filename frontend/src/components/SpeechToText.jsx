@@ -40,7 +40,7 @@ export default function SpeechToText() {
       }
 
       finalTranscriptRef.current = finalTranscript;
-      setTranscript(finalTranscript + interimTranscript); // Live update
+      setTranscript(finalTranscript + interimTranscript); 
     };
 
     recog.onerror = (event) => {
@@ -49,7 +49,7 @@ export default function SpeechToText() {
     };
 
     recog.onend = () => {
-      // Only restart if user still wants recording
+      
       if (isRecording) {
         recog.start();
       }
@@ -96,7 +96,7 @@ export default function SpeechToText() {
         value={transcript}
         onChange={(e) => {
           setTranscript(e.target.value);
-          finalTranscriptRef.current = e.target.value; // Sync manual edits
+          finalTranscriptRef.current = e.target.value; 
         }}
         placeholder="Your speech will appear here..."
       />

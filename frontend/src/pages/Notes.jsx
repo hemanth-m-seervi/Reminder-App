@@ -67,7 +67,7 @@ export default function Notes({ token }) {
     }
   };
 
-  // Add subject session to selected class/sem
+  
   const handleAddSubject = async () => {
     setError('');
     if (selectedClassId && subjectForm.subject) {
@@ -93,7 +93,7 @@ export default function Notes({ token }) {
     }
   };
 
-  // Add note to selected subject
+  
   const handleAddNote = async () => {
     setError('');
     if (selectedClassId && selectedSubject && noteForm.note) {
@@ -119,7 +119,7 @@ export default function Notes({ token }) {
     }
   };
 
-  // Add PDF to selected subject
+  
   const handleAddPdf = async () => {
     setError('');
     if (selectedClassId && selectedSubject && pdf) {
@@ -161,7 +161,7 @@ export default function Notes({ token }) {
             <div className="max-w-6xl w-full">
       <h2 className="text-3xl font-bold text-purple-700 mb-6">Notes Organizer</h2>
       <div className="flex flex-col md:flex-row gap-8 ">
-        {/* Sidebar: Classes/Sems */}
+        
         <div className="w-full md:w-64 bg-white rounded-2xl shadow-lg p-4 flex flex-col">
           <h3 className="text-xl font-bold text-purple-700 mb-4">Classes/Sems</h3>
           <div className="mb-4">
@@ -205,13 +205,13 @@ export default function Notes({ token }) {
             )}
           </div>
         </div>
-        {/* Main Content: Subjects and Notes */}
+        
         <div className="flex-1 bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl shadow-lg p-4 md:p-8 max-w-180">
           {selectedClassId ? (
             notes.filter(n => n._id === selectedClassId).map(n => (
               <div key={n._id}>
                 <h3 className="text-2xl font-bold text-purple-700 mb-4">{n.classOrSem}</h3>
-                {/* Subjects Dropdown and Add Button */}
+                
                 <div className="mb-6 flex flex-col sm:flex-row gap-2 items-start sm:items-center">
                   <select
                     value={selectedSubject || ''}
@@ -247,7 +247,7 @@ export default function Notes({ token }) {
                           if (res.ok) {
                             setNotes(notes.map(n => n._id === data._id ? data : n));
                             setSubjectForm({ subject: '' });
-                            // Only set selectedSubject if it exists in the updated subjects array
+                            
                             const updatedClass = data;
                             if (updatedClass.subjects.some(s => s.subject === subjectForm.subject)) {
                               setSelectedSubject(subjectForm.subject);
@@ -267,19 +267,19 @@ export default function Notes({ token }) {
                     Add Subject
                   </button>
                 </div>
-                {/* Notes/PDFs for selected subject */}
+                
                 {selectedSubject ? (
                   n.subjects.filter(s => s.subject === selectedSubject).map((s, j) => (
                     <div key={j} className="mb-4">
                       <h4 className="text-lg font-semibold text-blue-700 mb-2">{s.subject}</h4>
-                      {/* Add note/pdf */}
+                      
                       <div className="flex gap-3 mb-4 flex-wrap items-center">
                         <input name="note" value={noteForm.note} onChange={e => setNoteForm({ note: e.target.value })} placeholder="Note" className="border-2 border-blue-300 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 transition w-40 text-sm" />
                         <button onClick={handleAddNote} className="bg-blue-500 text-white px-3 py-1 rounded font-semibold shadow hover:bg-blue-600 transition text-xs">Add Text Note</button>
                         <input type="file" accept="application/pdf" ref={fileInputRef} onChange={e => setPdf(e.target.files[0])} className="border-2 border-blue-300 rounded-lg px-2 py-1 w-40 text-sm" />
                         <button onClick={handleAddPdf} className="bg-purple-500 text-white px-3 py-1 rounded font-semibold shadow hover:bg-purple-600 transition text-xs">Add PDF Note</button>
                       </div>
-                      {/* List notes/pdfs */}
+                      
                       {s.notes.length === 0 ? (
                         <p className="text-gray-400 ml-2">No notes yet.</p>
                       ) : (

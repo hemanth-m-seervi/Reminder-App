@@ -45,7 +45,7 @@ export default function LanguageTranslator() {
 
   return (
     <div className="w-full min-h-[40vh] bg-gradient-to-br from-purple-100 via-blue-50 to-purple-50 flex flex-col items-center justify-center rounded-2xl shadow-lg p-8 text-gray-900 border-2 border-purple-200">
-  {/* Removed Language Translator heading as requested */}
+  
       <div className="w-full max-w-2xl bg-white rounded-xl shadow p-6 mb-4 flex flex-col gap-4">
         <div className="flex gap-4">
           <textarea

@@ -47,12 +47,12 @@ export default function Calendar() {
     const totalDays = daysInMonth(currentDate);
     const firstDay = firstDayOfMonth(currentDate);
 
-    // Add empty cells for days before the first day of the month
+   
     for (let i = 0; i < firstDay; i++) {
       days.push(<div key={`empty-${i}`} className="w-8 h-8"></div>);
     }
 
-    // Add days of the month
+  
     for (let day = 1; day <= totalDays; day++) {
       days.push(
         <motion.button
@@ -108,7 +108,7 @@ export default function Calendar() {
         </motion.button>
       </div>
 
-      {/* Day Names */}
+      
       <div className="grid grid-cols-7 gap-1 mb-2">
         {dayNames.map(day => (
           <div key={day} className="w-8 h-8 flex items-center justify-center text-xs font-medium text-gray-500">
@@ -117,12 +117,12 @@ export default function Calendar() {
         ))}
       </div>
 
-      {/* Calendar Grid */}
+      
       <div className="grid grid-cols-7 gap-1">
         {renderCalendarDays()}
       </div>
 
-      {/* Selected Date Info */}
+      
       <div className="mt-4 pt-3 border-t border-gray-200">
         <p className="text-sm text-gray-600">
           Selected: {selectedDate.toLocaleDateString('en-US', { 

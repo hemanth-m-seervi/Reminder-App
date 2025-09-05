@@ -151,8 +151,7 @@ export default function MarksEntry({ token }) {
             style={{ minWidth: '140px' }}
           />
         </div>
-        {/* Session List - click to select */}
-        {/* Saved Marks Notes Section Header */}
+        
         <div className="mb-4">
           <h3 className="text-xl font-bold text-purple-700 mb-2">Saved Marks Notes</h3>
           {marksNotes.length === 0 && <div className="text-gray-500">No marks notes yet.</div>}
@@ -177,7 +176,7 @@ export default function MarksEntry({ token }) {
                     <span className="text-sm text-gray-500">{note.subjects.length} Subjects</span>
                   </div>
                 </div>
-                {/* Show details below the selected session card only */}
+                
                 {selectedExam === note.examName && (
                   <div className="mt-2 mb-4">
                     <div className="flex items-center justify-between mb-2">
@@ -217,7 +216,7 @@ export default function MarksEntry({ token }) {
                     ) : (
                       <div className="text-gray-500 mb-2">No subjects added yet.</div>
                     )}
-                    {/* Add Subject Form */}
+                    
                     {showAddSubjectForm && (
                       <div className="flex gap-2 mb-2 mt-2">
                         <input

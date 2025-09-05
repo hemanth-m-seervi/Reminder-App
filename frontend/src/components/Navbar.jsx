@@ -18,7 +18,7 @@ export default function Navbar() {
   return (
   <nav className="w-full bg-black/70 backdrop-blur-md shadow-md flex items-center px-2 sm:px-8 py-2 z-50 fixed top-0 left-0 right-0">
       <div className="flex items-center gap-2 sm:gap-4 mr-6">
-        {/* Hamburger for mobile - before logo */}
+        
         <button
           className="sm:hidden mr-2 p-2 focus:outline-none"
           aria-label="Open navigation menu"
@@ -31,7 +31,7 @@ export default function Navbar() {
         <span className="text-2xl font-bold text-purple-200">Remin</span>
         <span className="hidden sm:inline text-xs text-gray-200">College Manager</span>
       </div>
-      {/* Main nav links for desktop */}
+      
       <div className="hidden sm:flex flex-1 gap-4 overflow-x-auto scrollbar-hide">
         {navItems.map(item => (
           <NavLink
@@ -47,7 +47,7 @@ export default function Navbar() {
           </NavLink>
         ))}
       </div>
-      {/* Dropdown sidebar for mobile */}
+      
       {open && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex">
           <div className="w-64 bg-white h-full shadow-2xl flex flex-col p-6 animate-slideInLeft">
@@ -74,7 +74,7 @@ export default function Navbar() {
               ))}
             </nav>
           </div>
-          {/* Click outside to close */}
+          
           <div className="flex-1" onClick={() => setOpen(false)}></div>
         </div>
       )}

@@ -1,7 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-// import playIcon from "./images/play.png";
-// import dropdownIcon from "../../texttospeech/images/dropdown.png";
-// Removed custom CSS, now using Tailwind
+
 
 export default function TextToSpeech() {
   const textareaRef = useRef();
@@ -30,7 +28,7 @@ export default function TextToSpeech() {
       utterance.voice = voices[selectedVoice];
       utterance.lang = voices[selectedVoice].lang;
     }
-    window.speechSynthesis.cancel(); // Stop any current speech
+    window.speechSynthesis.cancel(); 
     window.speechSynthesis.speak(utterance);
   };
 
@@ -41,7 +39,7 @@ export default function TextToSpeech() {
   return (
     <div className="w-full min-h-[40vh] bg-gradient-to-br from-purple-100 via-blue-50 to-purple-50 flex flex-col items-center justify-center rounded-2xl shadow-lg p-8 text-gray-900 border-2 border-purple-200">
       <div className="w-full max-w-2xl bg-white rounded-xl shadow p-6 flex flex-col items-center gap-6">
-  {/* Heading removed as requested */}
+  
         <textarea
           ref={textareaRef}
           placeholder="Write anything here...."

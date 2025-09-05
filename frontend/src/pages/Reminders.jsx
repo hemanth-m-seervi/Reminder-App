@@ -67,7 +67,7 @@ function Reminders() {
     } catch {}
   };
 
-  // Real-time missed and upcoming logic
+
   const now = new Date();
   const upcomingReminders = reminders.filter(r => !r.completed && !r.missed && new Date(r.deadline) >= now)
     .sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
@@ -82,7 +82,7 @@ function Reminders() {
         <div className="flex justify-between items-center mb-4">
           <span></span>
         </div>
-        {/* Remove the top Missed button, keep only the small one next to Add */}
+        
         <div className="flex gap-4 mb-4">
           <div className="w-full flex flex-col sm:flex-row flex-nowrap gap-4 items-start">
             <input name="title" value={form.title} onChange={handleChange} placeholder="Assignment/Project" className="input min-w-0" />

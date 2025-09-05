@@ -35,7 +35,7 @@ export default function CurrencyConverter() {
   return (
     <div className="w-full min-h-[40vh] bg-gradient-to-br from-purple-100 via-blue-50 to-purple-50 flex flex-col items-center justify-center rounded-2xl shadow-lg p-8 text-gray-900 border-2 border-purple-200">
       <div className="w-full max-w-md bg-white rounded-xl shadow p-6 flex flex-col gap-4">
-  {/* Heading removed as requested */}
+  
         <form onSubmit={handleConvert} className="flex flex-col gap-4">
           <div>
             <label className="block text-base font-medium mb-1">Enter the amount</label>
