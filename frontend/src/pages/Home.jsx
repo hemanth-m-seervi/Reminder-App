@@ -33,7 +33,7 @@ export default function Home() {
               transition={{ duration: 2, repeat: Infinity, repeatType: 'loop', ease: 'easeInOut' }}
               className="inline-block"
             >
-              <FaUserCircle className="text-7xl text-purple-400 mb-4 ml-15 mt-10" />
+              <FaUserCircle className="text-7xl text-purple-400 mb-4 ml-15 mt-7" />
             </motion.div>
             <h2 className="text-4xl font-bold text-purple-700 mb-4 text-left ml-15 mt-3">Welcome to Remin!</h2>
             <p className="text-lg text-gray-600 mb-8 pl-15 text-left max-w-xl">

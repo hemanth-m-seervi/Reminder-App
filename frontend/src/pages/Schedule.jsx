@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
@@ -94,19 +93,52 @@ export default function Schedule({ token }) {
         </div>
         {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
         <ul className="space-y-2">
-          {[...tasks]
+          {/* Upcoming schedule as first item in the list */}
+          {upcoming && (
+            <li className="bg-yellow-100 border-l-4 border-yellow-500 rounded-lg p-3 mb-2 shadow flex items-center gap-2">
+              <button
+                onClick={async () => {
+                  try {
+                    const res = await fetch(`${API_BASE}/api/schedule/${upcoming._id}`, {
+                      method: 'DELETE',
+                      headers: { 'x-auth-token': token }
+                    });
+                    if (res.ok) {
+                      setTasks(tasks => tasks.filter((t) => t._id !== upcoming._id));
+                    }
+                  } catch {}
+                }}
+                className="mr-2 p-0 rounded-full text-gray-400 text-xs font-bold hover:text-red-500 transition flex items-center justify-center"
+                title="Delete schedule item"
+                style={{ width: '18px', height: '18px', background: 'transparent', border: 'none', lineHeight: '0' }}
+              >
+                &#10005;
+              </button>
+              <div className="flex flex-col md:flex-row md:justify-between md:items-center w-full">
+                <span className="font-semibold text-lg mb-1 md:mb-0">Upcoming: {upcoming.task}</span>
+                <span className="text-sm text-gray-700">
+                  {(() => {
+                    const dateObj = new Date(`${upcoming.date}T${upcoming.time}`);
+                    const formattedDate = dateObj.toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "long",
+                      year: "numeric",
+                    });
+                    const formattedTime = dateObj.toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    });
+                    return `${formattedDate} | ${formattedTime}`;
+                  })()}
+                </span>
+              </div>
+            </li>
+          )}
+          {restSchedule
             .sort((a, b) => {
-              // Sort by date descending, then time descending
-            // Find the nearest (upcoming) schedule
-            const now = new Date();
-            const upcoming = sortedSchedule.find(item => {
-              const itemDate = new Date(`${item.date}T${item.time}`);
-              return itemDate >= now;
-            });
-
               const dateA = new Date(a.date + 'T' + (a.time || '00:00'));
               const dateB = new Date(b.date + 'T' + (b.time || '00:00'));
-              return dateB - dateA;
+              return dateA - dateB;
             })
             .map((task, idx) => {
                let dateStr = '';
@@ -151,29 +183,6 @@ export default function Schedule({ token }) {
                 </li>
                );
             })}
-                  {/* Nearest deadline banner */}
-                  {upcoming && (
-                    <div className="bg-yellow-100 border-l-4 border-yellow-500 rounded-lg p-3 mb-4 shadow">
-                      <div className="flex flex-col md:flex-row md:justify-between md:items-center">
-                        <span className="font-semibold text-lg mb-1 md:mb-0">Upcoming: {upcoming.task}</span>
-                        <span className="text-sm text-gray-700">
-                          {(() => {
-                            const dateObj = new Date(`${upcoming.date}T${upcoming.time}`);
-                            const formattedDate = dateObj.toLocaleDateString("en-GB", {
-                              day: "2-digit",
-                              month: "long",
-                              year: "numeric",
-                            });
-                            const formattedTime = dateObj.toLocaleTimeString([], {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            });
-                            return `${formattedDate} | ${formattedTime}`;
-                          })()}
-                        </span>
-                      </div>
-                    </div>
-                  )}
         </ul>
       </div>
     </motion.div>
