@@ -17,7 +17,7 @@ export default function Auth({ setToken }) {
     setError('');
     setLoading(true);
     try {
-      const url = isLogin ? `${API_BASE}/api/auth/login` : `${API_BASE}/api/auth/register`;
+      const url = isLogin ? `${API_BASE}api/auth/login` : `${API_BASE}api/auth/register`;
       const body = isLogin ? { email: form.email, password: form.password } : form;
       const res = await fetch(url, {
         method: 'POST',

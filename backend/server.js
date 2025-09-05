@@ -13,7 +13,12 @@ const scheduleRoutes = require('./routes/schedule');
 const marksNoteRoutes = require('./routes/marksNote');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: true,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'x-auth-token']
+}));
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
